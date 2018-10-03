@@ -40,7 +40,15 @@ Finalmente, distinte queste due nozioni è possibile arrivare alla seguente conc
 
 \subsection{Transazioni e concatenazione di blocchi}
 
-Le blockchain utilizzano, letteralmente, una struttura pensata come una catena di blocchi. Ciascun blocco contiene al suo interno una lista di transazioni immutabili a loro volta contrassegnate da delle proprietà. Nelle attuali implementazioni le proprietà fondamentali sono: l’indirizzo mittente (input) e destinatario (output), l’ammontare di valuta o token contenuto nella transazione e la marcatura temporale (timestamp).
+Le blockchain utilizzano, letteralmente, una struttura pensata come una catena di blocchi. Ciascun blocco contiene al suo interno una lista di transazioni immutabili a loro volta contrassegnate da delle proprietà. Nelle attuali implementazioni le proprietà fondamentali sono:
+
+\begin{itemize}
+\item indirizzo mittente (input) 
+\item indirizzo destinatario (output)
+\item ammontare di valuta o token contenuto nella transazione
+\item marcatura temporale (timestamp)
+\end{itemize}
+
 
 In una rete di consenso decentralizzato vengono man mano inseriti dei blocchi contenenti al loro interno un certo numero di transazioni. A livello universale, di rete, questa catena viene gestita dagli algoritmi di consenso come ad esempio: Proof of Work e Proof of Stake (descritti nel paragrafo 2.1.4) appendendo i blocchi giudicati validi dopo l'ultimo blocco valido della catena in modo da creare un registro di operazioni ordinato cronologicamente. Una volta stabilita la legittimità di un blocco e la sua appartenenza alla catena valida più lunga, l’intera struttura viene aggiornata propagando i nuovi elementi a tutti i partecipanti del sistema. Lo stato del registro a questo punto, non è più soggetto a modifiche, diventa permanente e immutabile. Successivamente, il procedimento riparte ricorsivamente, come descritto, ampliando la catena con le nuove operazioni.
 
@@ -172,24 +180,32 @@ function calculateHash(difficulty) {
 //Output per nonce = 11:
 aac295677f4761d411bc4fdb2953ac3ce2a2b8202207928a8db1cdac45aa8885
 ...
-//Output per nonce = 359:
+//Output per nonce = 10390:
 0000b280f48a4640ea18e2b6ee999fc60bfc85b690e990c0bdc4f9ae2b1e13c6
 
 \end{lstlisting}
 
-A ogni iterazione viene generato il risultato della riga 3 e successivamente confrontato con la difficoltà che in questo esempio supponiamo sia pari a 4. Concretamente, il numero di questi tentativi fatti in un secondo prende il nome di hashrate. Se il risultato non soddisfa la dimostrazione allora viene incrementata di uno la proprietà nonce, numero arbitrario che può essere usato una volta sola. Siccome, anche una minima variazione in input probabilmente farà cambiare radicalmente il risultato, ad un certo punto verrà generata un risultato che soddisfa i requisiti prestabiliti nella proprietà della difficoltà.
+A ogni iterazione viene generato il risultato della riga 3 e successivamente confrontato con la difficoltà che in questo esempio supponiamo sia pari a 4. Concretamente, il numero di questi tentativi fatti in un secondo prende il nome di hashrate. Se il risultato non soddisfa la dimostrazione allora viene incrementata di uno la proprietà nonce, numero arbitrario che può essere usato una volta sola. Siccome, anche una minima variazione in input probabilmente farà cambiare radicalmente il risultato, ad un certo punto verrà generata un risultato che soddisfa i requisiti prestabiliti nella proprietà della difficoltà. Nella simulazione effettuata utilizzando una versione estesa di calculateHash l'output della riga 12 è stato trovato, dopo pochi secondi, al 10.390 tentativo. Per ottenere il risultato con cinque cifre iniziali uguali a zero ci è voluto quasi un minuto e 426.203 tentativi.
 
-Nelle applicazioni reali, avviene che questa dimostrazione di calcoli computazionali porta con sé il consumo di una quantità enorme di energia elettrica. Evidentemente, può essere considerata come uno spreco con un impatto negativo su nei vari contesti generali come l’ambiente, la favorizzazione di utenti con infrastruttura più efficiente (ad esempio, mining pools) ecc.
+\begin{figure}[H]
+\centering
+\includegraphics[width=1\textwidth]{immagini/miningOutput.png}
+\caption{Mining: Risultato simulazione}
+\label{fig:mesh5}
+\end{figure}
+
+In conseguenza, nelle applicazioni reali, succede che questa dimostrazione di calcoli computazionali porta con sé il consumo di una quantità enorme di energia elettrica. Evidentemente, può essere considerata come uno spreco con un impatto negativo su nei vari contesti generali come l’ambiente, la favorizzazione di utenti con infrastruttura più efficiente (ad esempio, mining pools) ecc.
 Si ipotizza che, attualmente il consumo di energia annuo di Bitcoin sia di circa 2.55 GW paragonabile al consumo annuo dei paesi come l’Irlanda (circa 3.1 GW) e in questa forma è destinato a crescere\footfullcite{btcEnergy}.
 
 \subsection{Proof of Stake}
 
-Per contrastare le conseguenze negative derivanti dall’utilizzo di Proof of Work sono stati sviluppati oppure sono in produzione altri sistemi di consenso. Il perno della costruzione di questi sistemi riguarda proprio la fase di dimostrazione come descritta in Proof of Work. Tra i sistemi più promettenti è stato definito Proof of Stake che riesce a risolvere il problema del consumo di energia relativo alla quantità di calcoli computazionali.
+Per contrastare le conseguenze negative derivanti dall’utilizzo di Proof of Work sono stati sviluppati oppure sono in produzione altri sistemi di consenso. Il perno della costruzione di questi sistemi riguarda proprio la fase di dimostrazione che contribuisce alla sicurezza e integrità della rete, così come descritta in Proof of Work. Tra i sistemi più promettenti è stato definito Proof of Stake, il quale riesce a risolvere il problema di consumo incrementale di energia dovuto alla quantità di calcoli computazionali.
 
+Questo algoritmo si basa su un processo di elezione. All’interno della rete blockchain, gli utenti possono scegliere di entrare a far parte di un gruppo di utenti, aperto a tutti, chiamati validatori. Per poter partecipare a questo processo è sufficiente depositare una quantità di valuta o token che verrà conservata nella rete come deposito (stake). Analogamente a Proof of Work a ogni partecipante, nel caso di Proof of Stake chiamato validatore al posto di miner, viene concesso il potere di appendere un blocco alla blockchain ricevendo in cambio una ricompensa (di solito una parte delle commissioni incluse nell’insieme delle transazioni del blocco). Il nodo validatore può essere scelto seguendo un processo di selezione casuale e tenendo conto della quantità del deposito messo a disposizione. I vantaggi di questo approccio sono evidenti dal punto di vista dell’efficienza computazionale. Inoltre, con la crescita della rete e la quantità di criptovaluta circolante al suo interno diventa teoricamente impraticabile effettuare un attacco della maggioranza che tra le altre cose può essere ulteriormente contrastato introducendo una certa variabile di casualità al processo di selezione del validatore. La scelta di particolari soluzioni dipende dalle diverse implementazioni dell'algoritmo, relativamente a Proof of Stake è opportuno menzionare che il deposito di validatori disonesti cioè coloro che cercano di approvare transazioni fraudolente non sarà restituito e in tal caso perderebbero dei soldi. Lo stesso deposito sarà mantenuto dalla rete per un certo periodo di tempo necessario per provare che non siano state accettate transazioni fraudolente da parte del validatore.
 
-% Fine sezione 2.1
+% Fine sezione 2.2
 
-\section{Funzionamento dell'ecosistema blockchain} % Inizio sezione 2.2
+\section{Funzionamento dell'ecosistema blockchain} % Inizio sezione 2.3
 
 Lorem ute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 

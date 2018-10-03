@@ -1,15 +1,27 @@
 \chapter{Ethereum: Sviluppo di applicazioni decentralizzate}
 
-Seguendo la divisione a tre strati: di concetti, implementazioni e istanze definita fin dall'inizio del lavoro, in questo capitolo verrà affrontato l'aspetto dell'implementazione nel caso concreto della piattaforma Ethereum. I concetti spiegati fino a questo punto costituiscono un base decisionale, un punto di partenza per scegliere le implementazioni che meglio si adottano alle proprie necessità. I concetti presentati finora possono essere visti come una sorta di contenitore aperto da cui è possibile “pescare” le proprietà da implementare a seconda delle funzionalità del sistema reale. 
+Seguendo la divisione a tre strati: di concetti, implementazioni e istanze definita fin dall'inizio del lavoro, in questo capitolo verrà affrontato l'aspetto dell'implementazione nel caso concreto della piattaforma Ethereum. I concetti spiegati fino a questo punto costituiscono un base decisionale, un punto di partenza per scegliere le implementazioni che meglio si adottano alle proprie necessità. I concetti presentati finora possono essere visti come una sorta di contenitore aperto da cui è possibile “pescare” le componenti concettuali da implementare a seconda delle funzionalità dell’applicazione reale. 
 
-Importante sottolineare che lo stato dell'arte delle blockchain limita e forse rende del tutto inutile il senso di descrivere le implementazioni concrete. Questa affermazione deriva dal contesto attuale, le blockchain nonostante non siano più definibili come una tecnologia fra le più recenti in confronto alle tempistiche nel settore informatico, generalmente non hanno raggiunto una stabilità sufficiente. Usando la terminologia presente nelle analisi e predizioni annuali condotte dalla Gartner\footfullcite{gart} la blockchain si trova attualmente sulla via di uscita dal cosiddetto "hype cycle"\footfullcite{gart2016} \smallskip \footfullcite{gart2018}. Una metodologia usata per rappresentare la maturità, l'adozione e l'applicazione di nuove tecnologie.
-La situazione può essere vista come un contesto variabile, di continuo sviluppo con l’emergere di nuove implementazioni, piattaforme e applicazioni. Una ricerca spesso finalizzata al miglioramento e adozione delle nuove tecniche per contrastare le limitazioni attuali del sistema ma pur sempre una situazione, qual è quella presente, in continuo mutamento caratterizzata dall'instabilità e cambiamenti radicali. Tuttavia, questo non pregiudica l’utilità delle cose dette finora in quanto, nel caso peggiore, possono servire anche per comprendere le scelte e gli sviluppi futuri.
+Importante sottolineare che lo stato dell'arte delle blockchain limita l’utilità di descrivere in dettaglio le implementazioni concrete. Questa affermazione deriva dal contesto attuale, le blockchain nonostante non siano più definibili come una tecnologia fra le più recenti in confronto alle tempistiche nel settore informatico, generalmente non hanno raggiunto una stabilità sufficiente. Usando la terminologia presente nelle analisi e predizioni annuali condotte dalla Gartner\footfullcite{gart} la blockchain si trova attualmente sulla via di uscita dal cosiddetto "hype cycle"\footfullcite{gart2016} \smallskip \footfullcite{gart2018}. Una metodologia usata per rappresentare la maturità, l'adozione e l'applicazione di nuove tecnologie.
+La situazione può essere vista come un contesto variabile, di continuo sviluppo con l’emergere di nuove implementazioni, piattaforme e applicazioni. Una ricerca spesso finalizzata al miglioramento e adozione delle nuove tecniche per contrastare le limitazioni attuali del sistema ma pur sempre una situazione, qual è quella presente, in continuo mutamento caratterizzata dall'instabilità e in alcuni casi, cambiamenti radicali. Tuttavia, questo non pregiudica l’utilità delle cose dette finora in quanto si tratta di concetti fondamentali che, nel caso peggiore, possono servire anche per comprendere le scelte e gli sviluppi futuri. 
 
-La scelta di Ethereum come sistema da presentare, collegato alla successiva costruzione di una applicazione nel capitolo successivo è stata fatta seguendo tra le altre, le motivazioni del paragrafo precedente. Viene perseguita l'idea legata alla correlazione tra il successo e la popolarità di un sistema misurata tenendo conto del numero di partecipanti e sviluppatori coinvolti, gli strumenti di sviluppo e il loro grado di maturità messi a disposizione, la frequenza di aggiornamenti con i relativi rischi connessi. Un insieme di fattori che le nuove implementazioni dovranno cercare di raggiungere per attrarre gli utenti e gli sviluppatori ai loro sistemi. Al momento dello scrivere la piattaforma Ethereum è il sistema più sviluppato sotto questi aspetti.
+La scelta di Ethereum come sistema da presentare, collegato alla successiva costruzione di una applicazione nel capitolo successivo è stata fatta seguendo tra le altre, queste motivazioni: di stabilità, sviluppo e innovazione. Viene perseguita l'idea legata alla correlazione tra il successo e la popolarità di un sistema misurata tenendo conto del numero di partecipanti e sviluppatori coinvolti, gli strumenti di sviluppo messi a disposizione e il loro grado di maturità, la frequenza di aggiornamenti e l’interesse della comunità ed enti pubblici e privati esterni con i relativi rischi connessi. Un insieme di fattori che le nuove implementazioni dovranno cercare di raggiungere per attrarre gli utenti e gli sviluppatori ai loro sistemi. Al momento dello scrivere la piattaforma Ethereum è il sistema più sviluppato sotto l’aspetto di sviluppo delle applicazioni decentralizzate.
 
-\section{Ethereum Metropolis}
+\section{Implementazione Ethereum}
 
-Ethereum è una piattaforma di sviluppo delle applicazioni decentralizzate. Caratteristiche: 
+Ethereum è una di piattaforma di sviluppo delle applicazioni decentralizzate basata sulla tecnologia blockchain pubblica e open-source.
+La novità principale di Ethereum è data dalla possibilità di programmazione in maniera Turing Completa. Si tratta dunque di una blockchain programmabile con il linguaggio chiamato Solidity attraverso cui è possibile esprimere qualsiasi algoritmo esprimibile con altri linguaggi di programmazione universali. Questi programmi scritti e compilati all’interno della blockchain prendono il nome di “Smart Contracts” e si comportano come dei contratti veri e propri. In rapporto ai loro corrispettivi tradizionali, come ad esempio contratti di 
+
+In questo capitolo verranno ripresi i concetti presentati e le loro implementazioni concrete con le relative modifiche ed espansioni. Nella vista di insieme si parlerà di:
+
+\begin{itemize}
+\item Espansione del concetto di transazione
+\item Struttura dati Patricia trees come espansione di Merkle trees
+\item Funzioni hash Keccak
+\item Sistema di consenso Proof of Work e PoS
+\end{itemize}
+
+Caratteristiche: 
 - Permessi: è una blockchain pubblica, decentralizzata\\
 - Hash: funzione di hash keccak256\\
 - Struttura dati: Merkle Trees - patricia trees\\
@@ -17,22 +29,31 @@ Ethereum è una piattaforma di sviluppo delle applicazioni decentralizzate. Cara
 - Smart contracts\\
 -- DA FARE\\
 
-\subsection{Caratteristiche in Ethereum Turing completness etc.}
-
 \subsection{Transazioni}
+
+\subsection{Patricia Trees}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=1\textwidth]{immagini/patricia_trie.png}
+\caption{Struttura di patricia trie}
+\label{fig:mesh6}
+\end{figure}
+
+\subsection{Ethereum Metropolis e Constantinople}
+
+Qui scrivo del consenso e della transizione da PoW a PoS
+Magari anche forks?
 
 \section{Smart Contracts}
 
-\blindtext
 
 \subsection{Solidity}
 
-\blindtext
-
-\section{Data storage}
+\subsection{Ethereum Virtual Machine}
 
 \blindtext
 
-\subsection{Ipfs}
+\subsection{Gas}
 
-\blindtext
+\subsection{Data storage}
