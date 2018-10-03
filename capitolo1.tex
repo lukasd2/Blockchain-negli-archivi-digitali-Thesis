@@ -78,19 +78,9 @@ Tenendo in mente che l'impostazione di un blocco può contenere un numero di pro
 
 Ogni blocco è legato al blocco precedente tramite una funzione hash calcolata in base alle proprietà del blocco. Una funzione hash è una funzione matematica unidirezionale che accetta un input di lunghezza arbitraria e ne produce un output di lunghezza prefissata.
 
-È una delle componenti base di una struttura formata da sequenze di blocchi che a sua volta è paragonabile alla struttura di una lista concatenata (linked list) tramite puntatori. In entrambi i casi la struttura permette di identificare in maniera univoca la relazione precedente e successivo che intercorre tra due blocchi. Data la definizione della funzione hash il cui risultato è contenuto tra le proprietà di ciascun blocco, è possibile formalizzare la seguente relazione:
-\\
-
-\begin{math} 
-\forall\; n,\ \ \exists\; n - 1 \ \ |  \ \ PrevHash(n) = Hash(n-1),\; \forall\; n \neq genesi
-\\
-\end{math}
-
-Per ogni blocco \begin{math} n \end{math} valido (ad eccezione del primo blocco della catena, genesi, dove la proprietà prevHash sarà uguale a 0) esiste un blocco \begin{math} n-1 \end{math} tale che, la funzione hash di \begin{math} n \end{math} è calcolata in base ai dati contenuti nel blocco precedente (\begin{math} n-1 \end{math}) con la risultante proprietà \begin{math} PrevHash(n) \end{math} equivalente ad un puntatore hash al blocco precedente. 
-Il risultato del confronto precedente è che invece di un semplice indirizzo che punta al prossimo elemento della lista concatenata, nelle sequenze di blocchi si crea una funzione hash formata a partire dalle proprietà (dati) del blocco precedente.
+È una delle componenti base di una struttura formata da sequenze di blocchi che a sua volta è paragonabile alla struttura di una lista concatenata (linked list) tramite puntatori. In entrambi i casi la struttura permette di identificare in maniera univoca la relazione precedente e successivo che intercorre tra due blocchi. Dunque, data la definizione della funzione hash il suo risultato dipende dalle proprietà di ciascun blocco.
 
 Senza entrare troppo in dettaglio, questo implica un insieme di proprietà "grande" sulle quali vengono calcolate le funzioni hash con la caratteristica che anche una minima variazione di ciascun componente del dominio della funzione molto probabilmente farà cambiare radicalmente il risultato calcolato.
-
 Nel seguente esempio si calcola la funzione hash applicando l'algoritmo SHA256 (Secure Hashing Algorithm)\footfullcite{sha2Wiki}, utilizzata nelle blockchain (per esempio Bitcoin) per due input apparentemente simili: 
 \\
 
@@ -108,7 +98,7 @@ Nel seguente esempio si calcola la funzione hash applicando l'algoritmo SHA256 (
 Si vede che anche la più piccola variazione in input produce (con probabilità estremamente alta) un output (righe 4,8) molto diverso.\footfullcite{hashExample}
 Continuando con questo ragionamento, i blocchi sono formati da un insieme di proprietà che messe insieme produrranno una hash unica. Considerando il seguente esempio di calcolo della proprietà prevHash di un blocco:
 \\
-\begin{lstlisting}
+\begin{lstlisting}[caption={Esempio di calcolo della funzione hash in base alle proprietà del blocco},language=JavaScript]
 >> SHA256(prevHash+timestamp+transactions+nonce)
 \end{lstlisting}
 
@@ -118,7 +108,7 @@ Infine, disponendo della vista d'insieme dell'algoritmo di hashing, deriva la si
 
 \subsection{Merkle Trees}
 
-Gli alberi di hash sono una struttura dati utilizzata nelle blockchain. È una delle componenti del blocco le cui proprietà fondamentali si sono ipotizzate negli esempi delle sezioni precedenti. In particolare, nella figura 2.2 è presente la radice (tx root) di un merkle tree. La radice è il risultato di applicazioni continue di operazioni hash a partire dal livello con cardinalità più alta. Il motivo per cui viene usata questa struttura è da ricondurre all'efficienza degli alberi di hash, nel memorizzare, nel caso delle blockchain, le transazioni. 
+Gli alberi di hash sono una struttura dati utilizzata nelle blockchain. È una delle componenti del blocco le cui proprietà fondamentali si sono ipotizzate negli esempi delle sezioni precedenti. In particolare, nella figura 2.2 è presente la radice (tx root) di un merkle tree. La radice è il risultato di applicazioni continue di operazioni hash a partire dal livello con cardinalità più alta (ipotizzando che la cardinalità della radice sia minore di quella dei suoi figli). Il motivo per cui viene usata questa struttura è da ricondurre all'efficienza degli alberi di hash, nel memorizzare, nel caso delle blockchain, le transazioni. 
 
 
 \begin{figure}[H]
@@ -147,32 +137,57 @@ Innanzitutto, le blockchain decentralizzate operano in maniera incentivizzata. L
 
 \subsection{Il problema dei generali bizantini}
 
-Dal punto di vista teorico, la difficoltà di consenso può essere ricondotta al problema dei generali bizantini\footfullcite{byzantine-generals-problem}. Si suppone che un città venga assediata da molti eserciti con a capo un generale. Per ottenere la vittoria tutti gli eserciti devono raggiungere un consenso e attaccare simultaneamente altrimenti se non attaccano in numero sufficiente verranno sconfitti. La seconda possibilità consiste nella ricezione dell'ordine di ritirata quindi di nuovo un consenso in cui tutti gli eserciti si ritirano unanimemente. Il generale può mandare l'ordine di attaccare oppure di ritirata a tutti gli n-1 comandanti degli eserciti. I comandanti possono mentire scegliendo arbitrariamente di passare ordini diversi e tradire il generale e gli altri comandanti. 
+Dal punto di vista teorico, la difficoltà di consenso può essere ricondotta al problema dei generali bizantini\footfullcite{byzantine-generals-problem}. In una delle possibili formulazioni del problema, si suppone che una città venga assediata da molti eserciti con a capo un generale. Per ottenere la vittoria tutti gli eserciti devono raggiungere un consenso e attaccare simultaneamente altrimenti se non attaccano in numero sufficiente verranno sconfitti. Il generale manda l’ordine, attraverso dei messaggeri ai comandanti degli eserciti che a loro volta possono mentire scegliendo arbitrariamente di passare ordini diversi e tradire il generale e gli altri comandanti.
 
-Theorem: For any m, Algorithm OM(m) reaches consensus if there are more than 3m generals and at most m traitors.
-This implies that the algorithm can reach consensus as long as 2/3 of the actors are honest. If the traitors are more than 1/3, consensus is not reached, the armies do not coordinate their attack and the enemy wins.
+Dunque, è una situazione che si porta bene a essere visualizzata all'interno delle blockchain (propriamente decentralizzate). In riferimento al problema sopra esposto si fa a meno del generale che manda degli ordini ai suoi sottoposti. Nella pratica, si tratta di una rete dove tutti i partecipanti possono proporre nuove transazioni e tutti insieme devono mettersi d'accordo su quali transazioni effettivamente aggiungere al registro comune in mancanza di un nodo generalmente definibile come detentore della verità (holder of truth). Il punto chiave è che tutti i componenti del sistema devono prendere la stessa decisione (e non necessariamente la decisione ritenuta “giusta”) su un piano di parità cioè senza l’esistenza di un’entità “fidata” che possa provarne l’autenticità. Tutto questo in un contesto di presenza di potenziali nodi "traditori" che minacciano l'integrità della rete. In riferimento a questi nodi viene sollevata la questione della fiducia che deriva dall'implementazione delle regole di consenso. La struttura delle blockchain (l’aggiunta di nuovi blocchi quindi la validazione delle transazioni) è controllata da queste regole le cui implementazioni implicano anche l'esistenza di un limite che se superato permette di approvare operazioni illecite e potenzialmente corrompere l'intera rete. Questo limite, a seconda dell’algoritmo utilizzato, riguarda la potenza computazionale necessaria per superare il controllo di validazione e il numero di nodi che decidono di mettersi d'accordo per approvare operazioni al di fuori dalle regole del sistema. Un esempio concreto, nella rete Bitcoin, la potenza computazionale necessaria per compromettere la rete è maggiore del 50\% totale della capacità computazionale dell’intera rete\footfullcite{btcAttacchi1}. Questa soglia, cresce man mano che i potenziali attaccanti vorrebbero modificare le transazioni contenute nei blocchi precedenti\footfullcite{btcAttacchi2}.
 
-%Si vede delineata qui, ciascuno avente i propri interessi ma nonostante obiettivi spesso %contrapposti l'intero sistema deve giungere a un consenso. In particolare si tratta di %una rete dove tutti i partecipanti possono proporre nuove transazioni e tutti insieme %devono mettersi d'accordo su quali transazioni effettivamente aggiungere al registro %comune.
+In questo modo, grazie al consenso distribuito, le blockchain riescono a rimediare al problema dei generali bizantini (BFT, Byzantine Fault Tolerance) in un ecosistema distribuito. Questo, come già accennato è garantito dagli algoritmi di consenso implementati nella rete, di cui i principali Proof of Work e Proof of Stake. Nell’insieme BFT contribuisce alla sicurezza della rete e previene il fenomeno della doppia spesa \footfullcite{btcSicurezza}.
 
-Un sistema BFT (Byzantine Fault Tolerance) è un sistema che riesce a rimediare al problema dei generali bizantini in un ecosistema decentralizzato. (https://medium.com/loom-network/understanding-blockchain-fundamentals-part-1-byzantine-fault-tolerance-245f46fe8419). Nel caso particolare di Bitcoin e, al momento dello scrivere, Ethereum, si utilizza un protocollo di consenso chiamato Proof of Work che riesce a dare la soluzione al problema sopra esposto.
-%Come accennato nel paragrafo 2.1.1 relativo alla questione di distribuzione e decentralizzazione, in un sistema decentralizzato di questo genere 
 
 \subsection{Proof of Work}
 
-Il protocollo Proof of Work, cronologicamente, è il primo sistema di consenso usato nelle blockchain. Implementato per la prima volta da Bitcoin con lo scopo di raggiungere un consenso tra in nodi presenti sulla rete circa lo stato dell’intero sistema. La sua finalità consiste nella gestione e aggiornamento della catena dei blocchi con i relativi elementi in modo che i tutti i partecipanti siano “in linea” con la versione della catena valida cioè la sequenza dei blocchi più lunga. Il legame tra i blocchi una volta validato dal protocollo comporta la creazione di una struttura dei contenuti immutabile contente tutta la storia delle operazioni intercorse fin dalla creazione del blocco genesi.
+Proof of Work, cronologicamente, è il primo sistema di consenso usato nelle blockchain. Implementato per la prima volta da Bitcoin con lo scopo di raggiungere un consenso tra in nodi presenti sulla rete circa lo stato dell’intero sistema. La sua finalità consiste nella gestione e aggiornamento della catena dei blocchi con i relativi elementi in modo che i tutti i partecipanti siano “in linea” con la versione della catena valida cioè la sequenza dei blocchi più lunga. Il legame tra i blocchi una volta validato dall'algoritmo comporta la creazione di una struttura di contenuti immutabile contente tutta la storia delle operazioni intercorse fin dalla creazione del blocco genesi.
+\begin{figure}[H]
+\centering
+\includegraphics[width=1\textwidth]{immagini/mining_pow.png}
+\caption{Mining: Proof of Work}
+\label{fig:mesh4}
+\end{figure}
 
-Senza un punto centrale di calcolo, il procedimento di validazione è incentivizzato per permettere il funzionamento affidabile e costante in un sistema decentralizzato. Nel caso di Proof Of Work, i membri del sistema possono partecipare a una competizione con lo scopo di appendere un blocco alla catena ricevendo in cambio una ricompensa. In questo caso si tratta di dimostrare di aver compiuto una quantità di calcoli computazionali per mezzo di cosiddetti “puzzle crittografici”. Queste dimostrazioni possono ad esempio sfruttare la caratteristica delle funzioni crittografiche di hash per cui il calcolo di una funzione hash comporta la generazione di un risultato
--- DA FARE
-distribuito nell’insieme dei risultati possibili.
-Ad esempio SHA-2 256bit con 2 alla 256 risultati, 
-se nonce = primi 16 bit
-+ previene DDOS/SPAM
+Nella figura 2.4 è illustrato il processo di creazione di nuovi blocchi collegati mediante il riferimento all'indirizzo hash del blocco precedente. Da notare: il tempo di creazione del blocco strettamente crescente dovuto al funzionamento di Proof of Work che sequenzialmente, a intervalli regolari permette l'inserimento nella rete di un blocco valido. Messe insieme: la quantità di computazione richiesta e la creazione di blocchi a intervalli regolari permette di rimediare ai problemi di congestione della rete dovuti alla creazione di una quantità di transazioni troppo grande da essere processata in tempi ragionevoli (così come avviene negli attacchi di tipo DDOS).
+
+Senza un punto centrale di calcolo, il procedimento di validazione è incentivato per permettere il funzionamento affidabile e costante in un sistema distribuito. Nel caso di Proof of Work, i membri della rete blockchain possono partecipare a una competizione con l’obbiettivo di appendere un blocco alla catena e ricevere in cambio una ricompensa. Si tratta di dimostrare di aver compiuto una quantità di calcoli computazionali per mezzo di cosiddetti “puzzle crittografici”. Queste dimostrazioni possono, ad esempio sfruttare la caratteristica della distribuzione uniforme delle funzioni crittografiche di hash per cui il calcolo di una funzione hash comporta la generazione di un risultato, il quale, come dimostrazione, dovrebbe appartenere a un insieme ristretto del dominio dei possibili risultati. Relativamente alla crescita e incremento della potenza computazionale dei calcolatori è consigliabile che questa dimostrazione sia controllata da una difficoltà variabile, anch’essa crescente in relazione all’aumento di hashrate (la frequenza di calcolo della funzione hash). Ad esempio, una dimostrazione Proof of Work, potrebbe richiedere che un numero arbitrario di cifre del risultato generato dalla funzione hash sia uguale a zero. Successivamente, l’incremento della difficoltà consiste nell’incremento di questo numero di cifre. Di conseguenza, l’aumento di hashrate è direttamente proporzionale alla probabilità di venire selezionati come creatori del nuovo blocco e quindi ricevere la ricompensa.
+
+Per ribadire quanto è stato appena detto, si suppone che la dimostrazione richieda che le prime tre cifre della funzione hash calcolata siano pari a zero.
+A questo scopo si riprende l'esempio del codice 2.3: Esempio di calcolo della funzione hash in base alle proprietà del blocco. 
+\\
+\begin{lstlisting}[caption={Esempio di calcolo della funzione hash in base alle proprietà del blocco},language=JavaScript]
+function calculateHash(difficulty) {
+    nonce = nonce + 1;
+    return SHA256(prevHash+timestamp+transactions+nonce);
+}
+...
+//Output per nonce = 10:
+3747cd1b31b876bda0bf8540ad4eeb115239c2d69835a74cc5835d9d3b3f3b27
+//Output per nonce = 11:
+aac295677f4761d411bc4fdb2953ac3ce2a2b8202207928a8db1cdac45aa8885
+...
+//Output per nonce = 359:
+0000b280f48a4640ea18e2b6ee999fc60bfc85b690e990c0bdc4f9ae2b1e13c6
+
+\end{lstlisting}
+
+A ogni iterazione viene generato il risultato della riga 3 e successivamente confrontato con la difficoltà che in questo esempio supponiamo sia pari a 4. Concretamente, il numero di questi tentativi fatti in un secondo prende il nome di hashrate. Se il risultato non soddisfa la dimostrazione allora viene incrementata di uno la proprietà nonce, numero arbitrario che può essere usato una volta sola. Siccome, anche una minima variazione in input probabilmente farà cambiare radicalmente il risultato, ad un certo punto verrà generata un risultato che soddisfa i requisiti prestabiliti nella proprietà della difficoltà.
+
+Nelle applicazioni reali, avviene che questa dimostrazione di calcoli computazionali porta con sé il consumo di una quantità enorme di energia elettrica. Evidentemente, può essere considerata come uno spreco con un impatto negativo su nei vari contesti generali come l’ambiente, la favorizzazione di utenti con infrastruttura più efficiente (ad esempio, mining pools) ecc.
+Si ipotizza che, attualmente il consumo di energia annuo di Bitcoin sia di circa 2.55 GW paragonabile al consumo annuo dei paesi come l’Irlanda (circa 3.1 GW) e in questa forma è destinato a crescere\footfullcite{btcEnergy}.
 
 \subsection{Proof of Stake}
 
-\blindtext
+Per contrastare le conseguenze negative derivanti dall’utilizzo di Proof of Work sono stati sviluppati oppure sono in produzione altri sistemi di consenso. Il perno della costruzione di questi sistemi riguarda proprio la fase di dimostrazione come descritta in Proof of Work. Tra i sistemi più promettenti è stato definito Proof of Stake che riesce a risolvere il problema del consumo di energia relativo alla quantità di calcoli computazionali.
 
-\subsection{Altri Sistemi di Consenso} % Fine sezione 2.1
+
+% Fine sezione 2.1
 
 \section{Funzionamento dell'ecosistema blockchain} % Inizio sezione 2.2
 
@@ -200,6 +215,8 @@ Unpermissioned ledgers, Permissioned ledgers, A shared ledger
 \subsection{Permissioned Ledgers}
 
 \blindtext
+
+\section{Blockchain negli archivi digitali} %  Inizio sezione 2.2
 
 % direi che non è necessario
 %\section{Esempi di applicazione}
