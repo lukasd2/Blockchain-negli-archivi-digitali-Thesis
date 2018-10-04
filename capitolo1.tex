@@ -90,9 +90,8 @@ Ogni blocco è legato al blocco precedente tramite una funzione hash calcolata i
 
 Senza entrare troppo in dettaglio, questo implica un insieme di proprietà "grande" sulle quali vengono calcolate le funzioni hash con la caratteristica che anche una minima variazione di ciascun componente del dominio della funzione molto probabilmente farà cambiare radicalmente il risultato calcolato.
 Nel seguente esempio si calcola la funzione hash applicando l'algoritmo SHA256 (Secure Hashing Algorithm)\footfullcite{sha2Wiki}, utilizzata nelle blockchain (per esempio Bitcoin) per due input apparentemente simili: 
-\\
 
-\begin{lstlisting}
+\begin{lstlisting}[caption={Esempio di calcolo della funzione hash SHA256},language=JavaScript]
 //Input 1: ciao Tizio
 >> SHA256("ciao Tizio")
 //Output 1: 
@@ -105,7 +104,7 @@ Nel seguente esempio si calcola la funzione hash applicando l'algoritmo SHA256 (
 
 Si vede che anche la più piccola variazione in input produce (con probabilità estremamente alta) un output (righe 4,8) molto diverso.\footfullcite{hashExample}
 Continuando con questo ragionamento, i blocchi sono formati da un insieme di proprietà che messe insieme produrranno una hash unica. Considerando il seguente esempio di calcolo della proprietà prevHash di un blocco:
-\\
+
 \begin{lstlisting}[caption={Esempio di calcolo della funzione hash in base alle proprietà del blocco},language=JavaScript]
 >> SHA256(prevHash+timestamp+transactions+nonce)
 \end{lstlisting}
@@ -207,12 +206,28 @@ Questo algoritmo si basa su un processo di elezione. All’interno della rete bl
 
 \section{Funzionamento dell'ecosistema blockchain} % Inizio sezione 2.3
 
-Lorem ute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+L’insieme dei concetti presentati, permette il funzionamento delle blockchain in un contesto distribuito. In questo capitolo sarà approfondito il legame tra queste componenti per capire meglio il funzionamento dell’intera rete. In molti casi, l’adozione delle blockchain porta con sé vantaggi indiscutibili ma anche ripercussioni circa questioni come la scalabilità, costi di funzionamento e governabilità.
+
+Saranno introdotte alcune ulteriori caratteristiche della tecnologia che derivano dai concetti presentati nel primo capitolo che per motivi di chiarezza dell’esposizione non erano adatte ad essere inserite nelle loro parti introduttive. In molti casi, le diverse componenti collaborano alla creazione di caratteristiche e soluzioni e pertanto è lecito parlarne solo a questo punto dopo che sono stati introdotti.
 
 \subsection{Transazioni e prevenzione della doppia spesa}
 
+Tra le componenti fondamentali delle blockchain un ruolo di primo piano spetta alle transazioni. Dopo una prima definizione del capitolo 2.3 in relazione alla struttura della rete, necessitano di ulteriori approfondimenti.
 
-Digital signatures, double spend
+I primi due elementi essenziali per poter effettuare una transazione sono: l’indirizzo mittente e destinatario. Questi indirizzi corrispondono agli account degli utenti che effettuano le transazioni. Così come nelle applicazioni web tradizionali gli account vengono identificati da un username e una password, nelle blockchain vengono semplicemente usati indirizzi (address) univoci. Questo non solo è sufficiente ai fini dell’autenticazione ma contribuisce alla sicurezza grazie all’uso della crittografia asimmetrica e il sistema di firme digitali. Questa estensione delle transazioni, si presta bene ad essere visualizzata attraverso l’esempio di uno semplice transazione.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=1\textwidth]{immagini/transazionetest.png}
+\caption{test}
+\label{fig:meshtest5}
+\end{figure}
+
+La transazione nella figura 2.6 consiste nell’invio di 20 token (rappresentante qualunque criptovaluta implementata nella blockchain) verso un altro utente della rete. Il vantaggio della crittografia asimmetrica, dal punto di vista di utente è che permette di condividere la propria chiave pubblica all’intera rete per poter essere identificato, come un username. Dall’altra parte la chiave privata (segreta), corrisponde alle tradizionali password, prova il possesso della chiave pubblica e pertanto consente di identificare in maniera sicura l’utente e in più permette anche di firmare le transazioni. Una transazione firmata, cioè dotata di firma digitale costruita combinando la chiave privata del mittente e il contenuto della transazione assicura l’integrità della transazione. L’algoritmo verificherà la firma digitale determinando se il contenuto corrisponde a quello originale e quindi se non è stato modificato.
+
+Un altro problema fondamentale circa le transazioni è il problema della doppia spesa. Consiste nell’abilità di spendere più di una volta la stessa quantità di valuta. In riferimento alla figura 2.6 (fare un esempio della doppia spesa – da fare)
+Poiché la prima applicazione della blockchain aveva come scopo la creazione di un sistema monetario digitale è possibile dedurre che il problema sia stato risolto. Effettivamente è così, la chiave è la marcatura temporale delle transazioni e la loro sequenzialità. 
+
 
 \subsection{Teoria dei giochi e governabilità}
 
@@ -220,7 +235,7 @@ hardforks
 
 \subsection{Trilemma scalability}
 
-\blindtext
+-- Da fare
 
 \section{Tipologie di un sistema distribuito} %  Inizio sezione 2.2
 
@@ -230,17 +245,6 @@ Unpermissioned ledgers, Permissioned ledgers, A shared ledger
 
 \subsection{Permissioned Ledgers}
 
-\blindtext
+-- Da fare
 
 \section{Blockchain negli archivi digitali} %  Inizio sezione 2.2
-
-% direi che non è necessario
-%\section{Esempi di applicazione}
-
-%\subsection{Case study 1: Santander money transfer}
-
-%\subsection{Case study 2: Blockchain università di Pisa}
-
-%\subsection{Case study 3: ?}
-%\footfullcite{Haber91howto}
-%\footfullcite{Kurose:2012:CNT:2584507}
