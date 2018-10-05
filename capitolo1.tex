@@ -140,7 +140,7 @@ A livello della blockchain questo apre diverse possibilità di verifica dell'int
 
 Una volta definito il funzionamento concettuale di una rete blockchain. Sorge il dubbio come questo proliferare di operazioni, di calcolo delle funzioni hash, dell'addizione dei nuovi blocchi alla catena e più in generale l'insieme delle operazioni di gestione dell'intera struttura sia possibile in un ecosistema decentralizzato. 
 
-Innanzitutto, le blockchain decentralizzate operano in maniera incentivizzata. La disintermediazione è garantita dagli algoritmi di consenso che stabiliscono le regole di funzionamento della rete. Nel caso delle blockchain pubbliche, si tratta di una rete dove tutti i partecipanti sono alla pari, possono proporre nuove transazioni e tutti insieme devono mettersi d'accordo su quali transazioni effettivamente aggiungere al registro comune. Si vede delineato qui un contesto in cui è presente un insieme di partecipanti ciascuno avente i propri interessi ma nonostante obiettivi spesso contrapposti l'intero sistema deve giungere a un consenso. Tipicamente, l'incentivizzazione consiste in una ricompensa, una quantità di valuta o token, spettante al nodo o ai nodi a cui viene dato il potere di appendere un blocco alla catena. L’approfondimento di questo aspetto economico è strettamente legato al tipo di algoritmo di consenso implementato, alcuni dei quali (ad esempio, Proof of Work e Proof of Stake), verranno discussi più avanti in questa sezione.
+Innanzitutto, le blockchain decentralizzate operano in maniera incentivata. La disintermediazione è garantita dagli algoritmi di consenso che stabiliscono le regole di funzionamento della rete. Nel caso delle blockchain pubbliche, si tratta di una rete dove tutti i partecipanti sono alla pari, possono proporre nuove transazioni e tutti insieme devono mettersi d'accordo su quali transazioni effettivamente aggiungere al registro comune. Si vede delineato qui un contesto in cui è presente un insieme di partecipanti ciascuno avente i propri interessi ma nonostante obiettivi spesso contrapposti l'intero sistema deve giungere a un consenso. Tipicamente, l'incentivazione consiste in una ricompensa, una quantità di valuta o token, spettante al nodo o ai nodi a cui viene dato il potere di appendere un blocco alla catena. L’approfondimento di questo aspetto economico è strettamente legato al tipo di algoritmo di consenso implementato, alcuni dei quali (ad esempio, Proof of Work e Proof of Stake), verranno discussi più avanti in questa sezione.
 
 \subsection{Il problema dei generali bizantini}
 
@@ -206,32 +206,50 @@ Questo algoritmo si basa su un processo di elezione. All’interno della rete bl
 
 \section{Funzionamento dell'ecosistema blockchain} % Inizio sezione 2.3
 
-L’insieme dei concetti presentati, permette il funzionamento delle blockchain in un contesto distribuito. In questo capitolo sarà approfondito il legame tra queste componenti per capire meglio il funzionamento dell’intera rete. In molti casi, l’adozione delle blockchain porta con sé vantaggi indiscutibili ma anche ripercussioni circa questioni come la scalabilità, costi di funzionamento e governabilità.
+L’insieme dei concetti presentati, contribuisce al funzionamento delle blockchain in un contesto distribuito. In questo capitolo sarà approfondito il legame tra queste componenti per capire meglio il funzionamento dell’intera rete. In molti casi, l’adozione delle blockchain porta con sé vantaggi ma anche ripercussioni circa questioni come la scalabilità, costi di funzionamento e governabilità. 
 
-Saranno introdotte alcune ulteriori caratteristiche della tecnologia che derivano dai concetti presentati nel primo capitolo che per motivi di chiarezza dell’esposizione non erano adatte ad essere inserite nelle loro parti introduttive. In molti casi, le diverse componenti collaborano alla creazione di caratteristiche e soluzioni e pertanto è lecito parlarne solo a questo punto dopo che sono stati introdotti.
+Saranno introdotte alcune ulteriori caratteristiche della tecnologia che derivano dai concetti presentati nel primo capitolo che per motivi di chiarezza dell’esposizione non erano adatte ad essere inserite nelle loro parti introduttive. In molti casi, le diverse componenti collaborano alla creazione di caratteristiche e soluzioni e pertanto è lecito parlarne solo a questo punto dopo che sono stati introdotti nel loro insieme.
+
 
 \subsection{Transazioni e prevenzione della doppia spesa}
 
-Tra le componenti fondamentali delle blockchain un ruolo di primo piano spetta alle transazioni. Dopo una prima definizione del capitolo 2.3 in relazione alla struttura della rete, necessitano di ulteriori approfondimenti.
+Tra le componenti fondamentali delle blockchain un ruolo di primo piano spetta alle transazioni. Dopo una prima definizione del capitolo 2.3 in relazione alla struttura della rete, queste necessitano di ulteriori approfondimenti.
 
-I primi due elementi essenziali per poter effettuare una transazione sono: l’indirizzo mittente e destinatario. Questi indirizzi corrispondono agli account degli utenti che effettuano le transazioni. Così come nelle applicazioni web tradizionali gli account vengono identificati da un username e una password, nelle blockchain vengono semplicemente usati indirizzi (address) univoci. Questo non solo è sufficiente ai fini dell’autenticazione ma contribuisce alla sicurezza grazie all’uso della crittografia asimmetrica e il sistema di firme digitali. Questa estensione delle transazioni, si presta bene ad essere visualizzata attraverso l’esempio di uno semplice transazione.
+I primi due elementi essenziali per poter effettuare una transazione sono: l’indirizzo mittente e destinatario. Questi indirizzi corrispondono agli account degli utenti che effettuano e ricevono le transazioni. Così come avviene nelle applicazioni web tradizionali, gli account vengono identificati da un username e una password, nelle blockchain vengono semplicemente usati indirizzi (address) univoci. Questo non solo è sufficiente ai fini dell’autenticazione ma contribuisce alla sicurezza grazie all’uso della crittografia asimmetrica\footfullcite{wikiAsymEncrypt} e il sistema di firme digitali\footfullcite{wikiDigSign}. Questa estensione delle transazioni, si presta bene ad essere visualizzata attraverso un semplice esempio di trasferimento di token da un indirizzo ad un altro.
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=1\textwidth]{immagini/transazionetest.png}
-\caption{test}
+\caption{Transazioni: Trasferimento token}
 \label{fig:meshtest5}
 \end{figure}
 
-La transazione nella figura 2.6 consiste nell’invio di 20 token (rappresentante qualunque criptovaluta implementata nella blockchain) verso un altro utente della rete. Il vantaggio della crittografia asimmetrica, dal punto di vista di utente è che permette di condividere la propria chiave pubblica all’intera rete per poter essere identificato, come un username. Dall’altra parte la chiave privata (segreta), corrisponde alle tradizionali password, prova il possesso della chiave pubblica e pertanto consente di identificare in maniera sicura l’utente e in più permette anche di firmare le transazioni. Una transazione firmata, cioè dotata di firma digitale costruita combinando la chiave privata del mittente e il contenuto della transazione assicura l’integrità della transazione. L’algoritmo verificherà la firma digitale determinando se il contenuto corrisponde a quello originale e quindi se non è stato modificato.
+Nella transazione (si veda la fig. 2.6), vengono inviati 20 token (o qualunque criptovaluta implementata nella blockchain) verso un altro utente della rete. L’uso della crittografia asimmetrica permette di condividere la propria chiave pubblica all’intera rete in modo da poter essere identificati, in questo caso come mittente della transazione. Dall’altra parte la chiave privata (segreta), corrisponde per certe caratteristiche alle tradizionali password in quanto prova il possesso della chiave pubblica e pertanto consente di identificare in maniera sicura l’utente ma in più permette anche di firmare le transazioni. Una transazione firmata, cioè dotata di firma digitale costruita combinando la chiave privata del mittente e il contenuto della transazione assicura l’integrità della transazione. Un algoritmo verificherà la firma digitale determinando se il contenuto corrisponde a quello originale e quindi se non è stato modificato.
 
-Un altro problema fondamentale circa le transazioni è il problema della doppia spesa. Consiste nell’abilità di spendere più di una volta la stessa quantità di valuta. In riferimento alla figura 2.6 (fare un esempio della doppia spesa – da fare)
-Poiché la prima applicazione della blockchain aveva come scopo la creazione di un sistema monetario digitale è possibile dedurre che il problema sia stato risolto. Effettivamente è così, la chiave è la marcatura temporale delle transazioni e la loro sequenzialità. 
+\begin{figure}[H]
+\centering
+\includegraphics[width=1\textwidth]{immagini/transazioneplaceholder2.png}
+\caption{Transazioni: Doppia spesa}
+\label{fig:meshtest6x}
+\end{figure}
 
+Un altro problema fondamentale circa le transazioni è il problema della doppia spesa illustrato nella figura 2.7. Consiste essenzialmente nell’abilità di spendere più di una volta la stessa quantità di valuta. La prima applicazione della blockchain aveva come scopo la creazione di un sistema monetario digitale dunque era fondamentale risolvere la questione. Effettivamente, combinando le caratteristiche delle blockchain, il sistema di consenso e la crittografia, il problema della doppia spesa può essere risolto in un ecosistema decentralizzato\footfullcite{btcSicurezza}. 
+
+In dettaglio, le transazioni contengono una propria marcatura temporale e durante il loro processo di validazione, seguono il criterio della sequenzialità. Il tutto avviene in un contesto trasparente con a disposizione tutta la storia delle transazioni avvenute nel sistema (equivalente a una base di dati dotata di storia completa). In questo modo, il contenuto delle transazioni è interamente tracciabile e pertanto può essere esplicitamente validata la loro effettiva disponibilità, in questo caso di token in questione. Seguendo questo ragionamento in realtà, non sarebbe necessario tenere un bilancio esplicito di token totali ma analizzando lo storico complessivo dei trasferimenti di valori specifici è possibile risalire all’importo in questione da cui deriva la trasparenza della rete blockchain.
 
 \subsection{Teoria dei giochi e governabilità}
 
-hardforks
+Una nozione importante per il funzionamento del paradigma blockchain è relativa al sistema di consenso incentivato. Riprendendo il principio delle blockchain pubbliche, ogni utente dovrebbe, in qualunque momento, essere in grado di partecipare ed effettuare modifiche al registro comune affidandosi alle regole della rete che garantiscono la risoluzione delle operazioni effettuate. Dunque, le blockchain così come tutti gli altri servizi web, devono essere in grado di offrire un servizio consistente producendo risultati deterministici con la peculiarità del contesto distribuito e decentralizzato.
+
+Nell’assenza di un’entità centrale, l’obiettivo viene raggiunto applicando un sistema di ricompense che segue i principi della teoria dei giochi\footfullcite{wikiGameTheory}. Un modello ragionevole, dal punto di vista economico, cerca di mantenere un equilibrio tra ricompense previste per utenti che seguono le regole e punizioni per chi le trasgredisce. Detto questo, i dettagli sono strettamente legati alle singole implementazioni della tecnologia. Generalmente, si cerca di promuovere la cooperazione a beneficio della rete e quindi di tutti gli utenti. L'obiettivo finale è quello di costruire la fiducia in una rete non supervisionata creando condizioni in cui le scelte, generalmente considerate ragionevoli, sono ricompensate e quindi benefiche per l’intero sistema,
+
+Un contesto decentralizzato implica anche l’adozione di regole di governance precise. Queste regole e procedure riguardano proprio la gestione e il controllo di questo fenomeno collettivo adottato attraverso una rete decentralizzata. La governance riguarda tradizionalmente: la fiducia nelle istituzioni, enti centralizzati, governi ecc. Per l’oggetto di questa tesi, la governance si fonda sulle tecnologie di regolamentazione basate sulla trasparenza, disponibilità di dati: immutabili e permanenti, esecuzione automatica di contratti (smart contracts di cui si parlerà nel capitolo 3.2) e una gestione comunitaria dell’intera rete. 
+
+Secondo gli analisti di STOA (Science and Technology Options Assessment), gruppo di ricerca del parlamento europeo, le blockchain potrebbero portare alla diffusione di organizzazioni autonome decentralizzate (DAO) governate dalla collettività. I potenziali sviluppi del un nuovo sistema di governance possono favorire la nascita di sistemi, organizzati non più gerarchicamente dall’alto verso il basso ma più democratici ed efficienti, dotati di utilità sociale che rispecchia direttamente i valori perseguiti dalla comunità\footfullcite{eu-parl-paper}.
+
+
+
+
 
 \subsection{Trilemma scalability}
 
