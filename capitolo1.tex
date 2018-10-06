@@ -49,7 +49,6 @@ Le blockchain utilizzano, letteralmente, una struttura pensata come una catena d
 \item marcatura temporale (timestamp)
 \end{itemize}
 
-
 In una rete di consenso decentralizzato vengono man mano inseriti dei blocchi contenenti al loro interno un certo numero di transazioni. A livello universale, di rete, questa catena viene gestita dagli algoritmi di consenso come ad esempio: Proof of Work e Proof of Stake (descritti nel paragrafo 2.1.4) appendendo i blocchi giudicati validi dopo l'ultimo blocco valido della catena in modo da creare un registro di operazioni ordinato cronologicamente. Una volta stabilita la legittimità di un blocco e la sua appartenenza alla catena valida più lunga, l’intera struttura viene aggiornata propagando i nuovi elementi a tutti i partecipanti del sistema. Lo stato del registro a questo punto, non è più soggetto a modifiche, diventa permanente e immutabile. Successivamente, il procedimento riparte ricorsivamente, come descritto, ampliando la catena con le nuove operazioni.
 
 Il primo blocco\footfullcite{genesisBitc} \smallskip \footfullcite{genesisEth} (hardcoded), originario di tutta la catena è chiamato \emph{genesi}. È un blocco speciale perché non è preceduto da altri blocchi, in esso vengono programmate le proprietà dei blocchi futuri. Le specifiche cambiano a seconda dell’implementazione. Generalmente, si tende a definire proprietà come la grandezza del blocco, la difficoltà di appendere nuovi blocchi e la ricompensa per la creazione (validazione) di nuovi blocchi nel sistema. 
@@ -206,9 +205,9 @@ Questo algoritmo si basa su un processo di elezione. All’interno della rete bl
 
 \section{Funzionamento dell'ecosistema blockchain} % Inizio sezione 2.3
 
-L’insieme dei concetti presentati, contribuisce al funzionamento delle blockchain in un contesto distribuito. In questo capitolo sarà approfondito il legame tra queste componenti per capire meglio il funzionamento dell’intera rete. In molti casi, l’adozione delle blockchain porta con sé vantaggi ma anche ripercussioni circa questioni come la scalabilità, costi di funzionamento e governabilità. 
+L’insieme dei concetti presentati, contribuisce al funzionamento delle blockchain in un contesto distribuito. In questo capitolo sarà approfondito il legame tra queste componenti per capire meglio il funzionamento dell’intera rete. In molti casi, l’adozione delle blockchain porta con sé vantaggi ma anche ripercussioni circa questioni come la scalabilità, costi di funzionamento e velocità.
 
-Saranno introdotte alcune ulteriori caratteristiche della tecnologia che derivano dai concetti presentati nel primo capitolo che per motivi di chiarezza dell’esposizione non erano adatte ad essere inserite nelle loro parti introduttive. In molti casi, le diverse componenti collaborano alla creazione di caratteristiche e soluzioni e pertanto è lecito parlarne solo a questo punto dopo che sono stati introdotti nel loro insieme.
+Saranno introdotte alcune ulteriori caratteristiche della tecnologia che derivano dai concetti presentati nel primo capitolo e che per motivi di chiarezza dell’esposizione non erano adatte ad essere inserite nelle loro parti introduttive. In molti casi, le diverse componenti collaborano alla creazione di caratteristiche e soluzioni e pertanto è lecito parlarne solo a questo punto dopo che sono stati introdotti nel loro insieme.
 
 
 \subsection{Transazioni e prevenzione della doppia spesa}
@@ -241,28 +240,68 @@ In dettaglio, le transazioni contengono una propria marcatura temporale e durant
 
 Una nozione importante per il funzionamento del paradigma blockchain è relativa al sistema di consenso incentivato. Riprendendo il principio delle blockchain pubbliche, ogni utente dovrebbe, in qualunque momento, essere in grado di partecipare ed effettuare modifiche al registro comune affidandosi alle regole della rete che garantiscono la risoluzione delle operazioni effettuate. Dunque, le blockchain così come tutti gli altri servizi web, devono essere in grado di offrire un servizio consistente producendo risultati deterministici con la peculiarità del contesto distribuito e decentralizzato.
 
-Nell’assenza di un’entità centrale, l’obiettivo viene raggiunto applicando un sistema di ricompense che segue i principi della teoria dei giochi\footfullcite{wikiGameTheory}. Un modello ragionevole, dal punto di vista economico, cerca di mantenere un equilibrio tra ricompense previste per utenti che seguono le regole e punizioni per chi le trasgredisce. Detto questo, i dettagli sono strettamente legati alle singole implementazioni della tecnologia. Generalmente, si cerca di promuovere la cooperazione a beneficio della rete e quindi di tutti gli utenti. L'obiettivo finale è quello di costruire la fiducia in una rete non supervisionata creando condizioni in cui le scelte, generalmente considerate ragionevoli, sono ricompensate e quindi benefiche per l’intero sistema,
+Nell’assenza di un’entità centrale, l’obiettivo viene raggiunto applicando un sistema di ricompense che segue i principi della teoria dei giochi\footfullcite{wikiGameTheory}. Un modello ragionevole, dal punto di vista economico, cerca di mantenere un equilibrio tra ricompense previste per utenti che seguono le regole e punizioni per chi le trasgredisce. In precedenza (nel capitolo 2.2), si è visto che a intervalli di tempo regolari viene avviata una competizione, al vincitore della quale spetta il potere di appendere un blocco alla catena e ricevere la ricompensa prevista. Detto questo, i dettagli sono strettamente legati alle singole implementazioni della tecnologia. Generalmente, si cerca di promuovere la cooperazione a beneficio della rete e quindi di tutti gli utenti. L'obiettivo finale è quello di costruire la fiducia in una rete non supervisionata creando condizioni in cui i procedimenti di verifica, validazione sono ricompensati e quindi benefici per l’intero sistema.
 
-Un contesto decentralizzato implica anche l’adozione di regole di governance precise. Queste regole e procedure riguardano proprio la gestione e il controllo di questo fenomeno collettivo adottato attraverso una rete decentralizzata. La governance riguarda tradizionalmente: la fiducia nelle istituzioni, enti centralizzati, governi ecc. Per l’oggetto di questa tesi, la governance si fonda sulle tecnologie di regolamentazione basate sulla trasparenza, disponibilità di dati: immutabili e permanenti, esecuzione automatica di contratti (smart contracts di cui si parlerà nel capitolo 3.2) e una gestione comunitaria dell’intera rete. 
+Un contesto decentralizzato implica anche l’adozione di regole di governance precise. Queste regole e procedure riguardano proprio la gestione e il controllo di questo fenomeno collettivo adottato attraverso una rete decentralizzata. La governance riguarda tradizionalmente: la fiducia nelle istituzioni, enti centralizzati, governi ecc. Per l’oggetto di questa tesi, la governance si fonda sulle tecnologie di regolamentazione basate sulla trasparenza, disponibilità di dati: immutabili e permanenti, esecuzione automatica di contratti (smart contracts di cui si parlerà nel capitolo 3.2) e una gestione comunitaria dell’intera rete.
 
-Secondo gli analisti di STOA (Science and Technology Options Assessment), gruppo di ricerca del parlamento europeo, le blockchain potrebbero portare alla diffusione di organizzazioni autonome decentralizzate (DAO) governate dalla collettività. I potenziali sviluppi del un nuovo sistema di governance possono favorire la nascita di sistemi, organizzati non più gerarchicamente dall’alto verso il basso ma più democratici ed efficienti, dotati di utilità sociale che rispecchia direttamente i valori perseguiti dalla comunità\footfullcite{eu-parl-paper}.
-
-
-
-
+Secondo gli analisti della STOA (Science and Technology Options Assessment), gruppo di ricerca del parlamento europeo, le blockchain potrebbero portare alla diffusione di organizzazioni autonome decentralizzate (DAO) governate dalla collettività. I potenziali sviluppi del un nuovo sistema di governance possono favorire la nascita di sistemi, organizzati non più gerarchicamente controllate dall’alto verso il basso ma più democratici ed efficienti, dotati di utilità sociale che rispecchia direttamente i valori perseguiti dalla comunità\footfullcite{eu-parl-paper}.
 
 \subsection{Trilemma scalability}
 
--- Da fare
+L'adozione di tutti questi concetti potenzialmente rivoluzionari, porta con sé anche dei compromessi. Per presentare l’estensione del problema, un esempio significante riguarda la velocità del funzionamento. In relazione ai sistemi in uso come Visa, le blockchain pubbliche sono molto più lente. Il sistema Visa, in media è in grado di processare circa 1700 transazioni al secondo (con potenziali capacità di scalabilità di oltre 24.000 transazione al secondo)\footfullcite{visaThroughput} mentre allo stato dell’arte attuale, il throughput (inteso come capacità di processare le operazioni) per blockchain più popolari Bitcoin ed Ethereum è pari rispettivamente a circa 7 transazioni al secondo e 15 transazioni al secondo nel caso di Ethereum. Si può notare che le transazioni Visa sono puramente finanziarie mentre il vantaggio delle blockchain deriva dalla possibilità di poter processare qualunque tipo di operazione di scambio. Tuttavia, il problema persiste (e non è correlato alla tipologia delle transazioni), è difficilmente accettabile che al crescere della rete gli utenti siano disposti ad aspettare tempi sempre più lunghi dovuti al processo di validazione (creazione di nuovi blocchi di transazioni controllato dal sistema di consenso). Un discorso simile può essere fatto per la scalabilità in termini di spazio, i registri distribuiti dotati di storia completa devono essere sincronizzati per potervi partecipare in maniera sicura. Uno spazio in continua crescita inadatto sia per i tempi necessari per una prima sincronizzazione (dal blocco genesis al blocco attuale) sia per la disponibilità di memoria nei dispositivi da cui è possibile accedervi (ad esempio, scaricare una copia di centinaia di GB su un cellulare non è praticabile). 
 
-\section{Tipologie di un sistema distribuito} %  Inizio sezione 2.2
+Introdotto questo problema della scalabilità, lo stato dell’arte della tecnologia blockchain è in grado di garantire simultaneamente due su tre proprietà fondamentali come illustrato nella figura 2.8
 
-Unpermissioned ledgers, Permissioned ledgers, A shared ledger
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.6\textwidth]{immagini/trilemmascalab.png}
+\caption{Trilemma scalability}
+\label{fig:meshtest7x}
+\end{figure}
+%c'è pure un errore nell'immagine nella parola scalabilità
+
+La combinazione delle proprietà individuate: la decentralizzazione, scalabilità e sicurezza della figura 2.8 prende il nome di trilemma scalability \footfullcite{trilemmaScalab}. La difficoltà di mantenere un equilibrio, un compromesso tra queste tre proprietà è uno dei problemi principali del paradigma blockchain. Attualmente, è in corso la ricerca sui metodi e soluzioni per ovviare alla necessità di sacrificare almeno una di queste tre proprietà. Un’analisi più approfondita esula dallo scopo di questa tesi ma è opportuno menzionare un certo numero di direzioni della ricerca, considerate come più promettenti, tra queste è possibile individuare: sharding, sidechains, plasma e molti altri.
+
+Infine, per certe applicazioni il trilemma scalability potrebbe non costruire affatto un problema. Nella prossima sezione si parlerà dell’adozione di una tipologia blockchain con permessi (permissioned).
+
+\section{Tipologie di un sistema distribuito} %  Inizio sezione 2.4
+
+In funzione dei principi che concorrono alla formazione delle blockchain, è ragionevole pensare che a seconda delle applicazioni che vogliono raggiungere degli obiettivi concreti, sia importante trovare un compromesso tra i vantaggi e gli svantaggi inerenti al paradigma in questione. Infatti, è possibile scegliere tra i concetti (descritti nel capitolo 2) per creare un sistema blockchain adatto alle proprie esigenze. Per questo scopo è possibile estrapolare quattro concetti principali del paradigma blockchain: 
+
+\begin{itemize}
+\item Decentralizzazione
+\item Trasparenza
+\item Immutabilità
+\item Permanenza
+\end{itemize}
+
+Insieme questi concetti concorrono alla sicurezza dell'intera rete ma come è stato già detto ne derivano problemi relativi a scalability trilemma. Rinunciando a delle proprietà è possibile creare dei sistemi più efficienti ma che si avvicinano di più ai sistemi informatici già esistenti. Pertanto, è importante considerare attentamente i requisti del progetto a cui si vorrebbe applicare questa tecnologia per poter valutare in maniera ottimale i vantaggi e gli svantaggi rispetto ai tradizionali sistemi centralizzati.
 
 \subsection{Unpermissioned Ledgers}
 
+Le blockchain pubbliche o senza permessi, sono la tipologia che implementa tutti i concetti descritti fino a questo punto. Sono aperte, non hanno un proprietario e consentono indistintamente a tutti di contribuire e interagire con le risorse della rete. Come, affermato in precedenza permettono a tutti di entrare in possesso di un’identica copia dell’attuale registro distribuito e universalmente validato dagli utenti della blockchain.
+
+Questa tipologia di blockchain costituisce l’oggetto principale di questa tesi, è il paradigma che ha come presupposto la decentralizzazione del potere e dei dati rendendo quasi impossibili eventuali tentativi di censura\footfullcite{censorship}. Gli esempi di implementazioni blockchain: Bitcoin ed Ethereum fanno parte di questa tipologia. È una tipologia promettente ma sulla quale sono necessari altri miglioramenti in particolare, nel settore della scalabilità. In questo modo, potrebbero costituire una valida alternativa ai sistemi attuali e competere in un numero di ambiti applicativi più largo.
+
 \subsection{Permissioned Ledgers}
 
--- Da fare
+Le blockchain con permessi (permissioned) ammettono di essere più strettamente controllate. Permettono di incorporare un’entità centrale con il compito di gestire le regole della rete, stabilire i permessi degli utenti della rete, la visibilità dei dati e così via, proprio come avviene nei sistemi centralizzati. A seconda delle necessità, in una blockchain di questo tipo si potrebbe rinunciare a una parte di potere centralizzato o viceversa a una parte delle caratteristiche delle blockchain pubbliche per creare applicazioni che meglio si adattano alle necessità di enti, imprese o istituzioni interessate. Ad esempio, tra le tante possibilità: il sistema di consenso potrebbe essere controllato da utenti imposti a priori dal proprietario/i della rete perché ritenuti fidati. Un'altra opzione utile è relativa ai diritti di leggere o modificare la blockchain, questi potrebbero essere assegnati a certe categorie di utenti. La conseguenza di questo modello è collegata alla diminuzione della decentralizzazione e della trasparenza rispetto alla tipologia senza permessi.
 
-\section{Blockchain negli archivi digitali} %  Inizio sezione 2.2
+In questo modo, è possibile usufruire di alcuni concetti delle blockchain come la struttura basata sulla crittografia, l’implementazione di smart contracts ecc. allo stesso tempo favorendo la scalabilità della rete stessa. Un esempio rilevante, già fatto in precedenza riguarda Ripple e il suo sistema di pagamenti fondato sulla blockchain con permessi che riesce a raggiungere un throughput simile a quello del sistema Visa. Analizzando il funzionamento di attuali sistemi bancari è facile pensare a come le transazioni, in particolare tra banche e nazioni diverse, richiedano tempo e costi connessi alle commissioni. Una potenziale applicazione di permissioned blockchain, come Ripple\footfullcite{rippleProtocol}, potrebbe favorire la creazione di standard internazionali con un incremento della velocità di trasferimenti e la relativa diminuzione di costi di mantenimento dovuta ai dati sparsi nei diversi sistemi bancari.
+
+\section{Blockchain negli archivi digitali} %  Inizio sezione 2.5
+
+Tra i tanti settori interessati alle applicazioni della tecnologia blockchain, l’area relativa ai beni culturali e archivi digitali sembra particolarmente promettente. I vantaggi derivanti dalla digitalizzazione di dati in un contesto distribuito potrebbero fornire la risposta ai problemi presenti nelle attuali basi di dati. 
+
+Questa sezione si ricollega direttamente al progetto svolto per questa tesi, i cui requisiti dettagliati si trovano nel capitolo 4.1. Il progetto svolto ha come obiettivo l’inserimento, la consultazione e verifica delle opere d’arte minori. Per ricapitolare lo strato concettuale, può essere interessante vedere l’implementazione delle blockchain nel caso concreto giustificando quello che si è definito un contesto di applicazione promettente. 
+
+A livello generale i concetti presentati in questo capitolo, si prestano molto bene al contesto applicativo in questione. Innanzitutto, intuitivamente è possibile dare una prima definizione delle opere d’arte minori come opere meno famose e per qualsiasi motivo giudicate meno importanti delle opere d’arte vere e proprie. Questo ovviamente non diminuisce la loro importanza a livello culturale e locale. Anzi, la loro salvaguardia e valorizzazione potrebbe sotto certi aspetti rivelarsi più difficile di quello dei loro corrispettivi famosi. Questo perché questi oggetti sono più vulnerabili alle contraffazioni e furti. Una prima azione prioritaria consisterebbe proprio nella registrazione di questi oggetti in un sistema blockchain. 
+
+In questo processo di archiviazione entrano in azione i concetti del paradigma blockchain. 
+
+\begin{itemize}
+\item Decentralizzazione: gli archivi digitali sono generalmente controllati da un ente centrale con il compito di mantenere e aggiornare il relativo database. La decentralizzazione permette di fare a meno del controllo centrale collocando il contenuto nelle mani del patrimonio umano. Come i loro corrispettivi fisici, dovrebbero essere accessibili e disponibili a chiunque ovunque e in qualunque periodo temporale.     
+\item Trasparenza
+\item Immutabilità
+\item Permanenza: il processo di digitalizzazione dovrebbe permettere la disponibilità degli oggetti in maniera permanente  
+\end{itemize}
