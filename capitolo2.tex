@@ -8,7 +8,7 @@ Importante sottolineare che lo stato dell'arte delle blockchain limita l’utili
 \begin{figure}[H]
 \centering
 \includegraphics[width=1\textwidth]{immagini/blockchainHype.png}
-\caption{Hype}
+\caption{Tecnologia blockchain: Hype Cycle}
 \label{fig:mesh7}
 \end{figure}
 
@@ -27,11 +27,11 @@ Riassumendo, la visione del progetto Ethereum è quella di creare un computer de
 \begin{figure}[H]
 \centering
 \includegraphics[width=1\textwidth]{immagini/architetturav1.png}
-\caption{Architettura}
+\caption{Architettura blockchain}
 \label{fig:mesh8}
 \end{figure}
 
-In relazione al classico modello client-server, nel modello decentralizzato lo strato back-end è direttamente implementato nella blockchain attraverso gli smart contracts. L’esecuzione della logica dei contratti avviene grazie alla macchina virtuale Ethereum (EVM) eseguita da ciascun nodo della rete estendendo così il concetto di database distribuito con la nozione di calcolo distribuito (distributed computing).  Ethereum prevede un meccanismo di incentivi incorporato nel sistema di consenso della rete attraverso l’uso di una criptovaluta chiamata Ether. La logica transazionale (estesa con i smart contracts), in relazione alla complessità di calcoli computazionali è regolata da un costo espresso in gas corrispondente a una frazione di Ether. Si tratta di un meccanismo grazie al quale è possibile prevenire lo spam dovuto ad esempio all’esecuzione di programmi non terminabili. 
+In relazione al classico modello client-server, nel modello decentralizzato lo strato back-end è direttamente implementato nella blockchain attraverso gli smart contracts. L’esecuzione della logica dei contratti avviene grazie alla macchina virtuale Ethereum (EVM) eseguita da ciascun nodo della rete estendendo così il concetto di database distribuito con la nozione di calcolo distribuito (distributed computing\footfullcite{wikidistrComp}).  Ethereum prevede un meccanismo di incentivi incorporato nel sistema di consenso della rete attraverso l’uso di una criptovaluta chiamata Ether. La logica transazionale (estesa con i smart contracts), in relazione alla complessità di calcoli computazionali è regolata da un costo espresso in gas corrispondente a una frazione di Ether. Si tratta di un meccanismo grazie al quale è possibile prevenire lo spam dovuto ad esempio all’esecuzione di programmi non terminabili. 
 
 In questo capitolo verranno analizzate queste modifiche ed espansioni della blockchain Ethereum.
 
@@ -45,13 +45,31 @@ Le transazioni in Ethereum sono estese con tre nuove proprietà:
 \item Un valore Gas Price
 \end{itemize}
 
-Dunque, in riferimento alle transazioni del capitolo precedente (come ad esempio quella in figura 2.6) vengono aggiunte ai campi già descritti precedentemente: mittente, destinatario e valore da trasferire. Le nuove proprietà o campi sono strettamente legati alla EVM con la possibilità di accedere ai campi della transazione.
+Dunque, in riferimento alle transazioni del capitolo precedente (come ad esempio quella in figura 2.6) queste proprietà vengono aggiunte ai campi già descritti precedentemente: mittente, destinatario e valore da trasferire. Le nuove proprietà o campi sono strettamente legati al funzionamento della EVM che può accedere ai campi della transazione.
 
-In particolare, il campo di dati (opzionale) può essere usato per identificare specifiche operazioni sulla blockchain, ad esempio: la registrazione di domini. Prima di andare avanti è importante spiegare che in Ethereum esistono due tipi di account, quelli appartenenti agli utenti e ai contratti. Questi account posseggono le stesse caratteristiche: sono identificati da un indirizzo, mantengono il bilancio di token disponibili ecc. Funzionano alla stessa maniera con l’eccezione che i primi (account utente) sono controllati da chiavi private e gli altri dal codice eseguito in maniera automatica. Proprio per necessità di eseguire programmi equivalenti al codice dei contratti sono state create le proprietà Start Gas e Gas Price. Start gas rappresenta il numero massimo di step computazionali che la transazione a cui si riferisce può eseguire. Gas Price, rappresenta il costo che il mittente è disposto a pagare per l’esecuzione di programmi. Di solito l’incremento di quest’ultima proprietà permette di conquistare una certa priorità nel processo di validazione della transazione in questione\footfullcite{ethWhitepaperTx}.
+In particolare, il campo di dati (opzionale) può essere usato per identificare specifiche operazioni sulla blockchain, ad esempio: la registrazione di domini. Prima di andare avanti è opportuno spiegare che in Ethereum esistono due tipi di account, quelli appartenenti agli utenti e ai contratti. Questi account posseggono le stesse caratteristiche: sono identificati da un indirizzo, mantengono il bilancio di token disponibili ecc. Funzionano alla stessa maniera con l’eccezione che i primi (account utente) sono controllati da chiavi private e gli altri dal codice eseguito in maniera automatica. Proprio per la necessità di eseguire programmi equivalenti al codice dei contratti sono state create le proprietà Start Gas e Gas Price. Start Gas rappresenta il numero massimo di step computazionali che la transazione a cui si riferisce può eseguire. Gas Price, rappresenta il costo che il mittente è disposto a pagare per l’esecuzione di programmi. Di solito l’incremento di quest’ultima proprietà permette di conquistare una certa priorità nel processo di validazione delle transazioni\footfullcite{ethWhitepaperTx}.
 
-Come già introdotto, i valori Start Gas e Gas Price permettono di rimediare ai problemi relativi all'eseguimento di programmi infiniti e la conseguente congestione della rete dovuta a un numero eccessivo di costi calcoli computazionali.
+Come già introdotto, i valori Start Gas e Gas Price permettono di rimediare ai problemi relativi all'esecuzione di programmi infiniti e la conseguente congestione della rete dovuta a un numero eccessivo di calcoli computazionali costosi.
 
 \subsection{Patricia Trees}
+
+La struttura dati usata in Ethereum prende il nome di Patricia Tree (o trie) che rappresenta un’estensione di Merkle Tree (per la definizione si rimanda al capitolo 2.3). Se per lo strato concettuale, i Merkle Tree servivano fondamentalmente per memorizzare e verificare le transazioni attraverso procedimenti di hashing ricorsivi, in Ethereum sono usati per memorizzare lo stato della rete. In particolare, al posto di una radice Merkle Tree (tx root), Patricia Tree è definito dalle seguenti tre radici:
+
+\begin{itemize}
+\item Radice dello stato
+\item Radice delle transazioni
+\item Radice delle ricevute
+\end{itemize}
+
+Analogamente a Merkle Trees, grazie alla applicazione ricorsiva di funzioni hash crittografiche (in Ethereum viene usato lo standard SHA-3 e in particolare l'algoritmo Keccak256) la radice diventa una sorta di impronta digitale per l'intera struttura dati sottostante. Ogni modifica a qualsiasi livello della struttura farà cambiare il risultato dell'applicazione di funzioni hash sul ramo interessato dalla modifica fino alla radice stessa. 
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=1\textwidth]{immagini/EthBlockSimplified.png}
+\caption{Ethereum: Semplificazione blocco}
+\label{fig:EthBlock}
+\end{figure}
+
 
 \begin{figure}[H]
 \centering
