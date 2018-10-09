@@ -52,16 +52,16 @@ In particolare il campo di dati (opzionale) può essere usato per identificare s
 Come già introdotto, i valori Start Gas e Gas Price permettono di rimediare ai problemi relativi all'esecuzione di programmi infiniti e la conseguente congestione della rete dovuta a un numero eccessivo di calcoli computazionali costosi.
 
 \subsection{Patricia Trees}
-
-La struttura dati usata in Ethereum prende il nome di Patricia Tree (o trie) e rappresenta un’estensione di Merkle Tree (per la definizione si rimanda al capitolo 2.3). Se per lo strato concettuale i Merkle Tree servivano fondamentalmente per memorizzare e verificare le transazioni attraverso procedimenti di hashing ricorsivi, in Ethereum sono usati per memorizzare lo stato della rete. In particolare, al posto di una radice Merkle Tree (tx root), Patricia Tree è definito dalle seguenti tre radici:
+% --- da migliorare
+La struttura dati usata in Ethereum prende il nome di Patricia Tree (o trie) e rappresenta un’estensione di Merkle Tree (per la definizione si rimanda al capitolo 2.3). Se per lo strato concettuale i Merkle Tree servivano fondamentalmente per la memorizzazione e la verifica delle transazioni attraverso procedimenti di hashing ricorsivi, in Ethereum sono usati anche per memorizzare lo stato della rete e il risultato delle transazioni. In particolare in un blocco della rete al posto di una radice di Merkle Tree (tx root), sono incluse le seguenti tre radici di Patricia Tree:
 
 \begin{itemize}
 \item Radice dello stato
 \item Radice delle transazioni
-\item Radice delle ricevute
+\item Radice delle ricevute (delle transazioni)
 \end{itemize}
 
-Analogamente a Merkle Trees, grazie all'applicazione ricorsiva di funzioni hash crittografiche (in Ethereum viene usato lo standard SHA-3\footfullcite{sha3Wiki} e in particolare l'algoritmo Keccak256) la radice diventa una sorta di impronta digitale per l'intera struttura dati sottostante. Ogni modifica a qualsiasi livello della struttura farà cambiare il risultato dell'applicazione di funzioni hash sul ramo interessato dalla modifica fino alla radice stessa. 
+Analogamente a quanto detto per i Merkle Trees, in Patricia Trees grazie all'applicazione ricorsiva di funzioni hash crittografiche (in Ethereum viene usato lo standard SHA-3\footfullcite{sha3Wiki} e in particolare l'algoritmo Keccak256) la radice diventa una sorta di impronta digitale per l'intera struttura dati sottostante. Ogni modifica a qualsiasi livello della struttura farà cambiare il risultato dell'applicazione di funzioni hash sul ramo interessato dalla modifica fino alla radice stessa. 
 
 \begin{figure}[H]
 \centering
@@ -70,15 +70,10 @@ Analogamente a Merkle Trees, grazie all'applicazione ricorsiva di funzioni hash 
 \label{fig:BloccoEthereumSemplif}
 \end{figure}
 
-Dunque, in relazione al concetto del blocco illustrato nel capitolo 2.1, la figura \ref{fig:BloccoEthereumSemplif} rappresenta una semplificazione del blocco Ethereum (per la completa lista delle proprietà si rimanda alla sezione 4.3. "The Block" del Yellowpaper Ethereum\footfullcite{ethYellowpaper}).
+Dunque in relazione al concetto di blocco illustrato nel capitolo 2.1, la figura \ref{fig:BloccoEthereumSemplif} rappresenta una semplificazione del blocco Ethereum (per la completa lista delle proprietà si rimanda alla sezione 4.3. "The Block" del Yellowpaper Ethereum\footfullcite{ethYellowpaper}).
 
-Un aumento della complessità delle transazioni ha come conseguenza diretta l’espansione dell’intero stato della rete Ethereum. Se per lo strato concettuale, lo stato della rete blockchain corrispondeva semplicemente alle transazioni. 
-Per lo stato della rete si intendono essenzialmente tutti gli account della blockchain (inclusi account esterni e contratti). Lo stato della rete deve essere memorizzato perché con la presenza di smart contracts la situazione diventa mutabile, lo stato può cambiare in seguito all’esecuzione automatica dei contratti. Gli account soggetti a questi potenziali cambiamenti sono composti da indirizzo, totale di token, nonce, smart contracts, storage… 
-La logica transazionale (estesa con i smart contracts)
-
-Patricia Tree facilità l'inserzione, l'eliminazione e l'aggiornamento di dati
-
-
+Un aumento della complessità delle transazioni ha come conseguenza diretta l’espansione dell’intero stato della rete Ethereum. In questa implementazione, per lo stato della rete si intende essenzialmente lo stato di tutti gli account della blockchain (inclusi account esterni e contratti). Lo stato della rete è mutabile a causa della presenza degli smart contracts e deve essere memorizzato perché può cambiare in qualunque momento in seguito all’esecuzione automatica dei contratti. 
+L’altra novità del blocco Ethereum (in figura \ref{fig:BloccoEthereumSemplif}) è la radice delle ricevute. Ogni blocco contiene ricevute permanenti delle transazioni relative al blocco che le contengono.
 
 \begin{figure}[H]
 \centering
@@ -87,12 +82,17 @@ Patricia Tree facilità l'inserzione, l'eliminazione e l'aggiornamento di dati
 \label{fig:mesh6}
 \end{figure}
 
+Patricia Tree facilità l'inserzione, l'eliminazione e l'aggiornamento di dati, obiettivi importanti per questioni di efficienza in una situazione dove lo stato della rete necessita di aggiornamenti frequenti. Per una descrizione formale dei vantaggi inerenti a questa struttura dati si rimanda all’appendice D, “Modified Merkle Patricia Tree” del Yellowpaper Ethereum\footfullcite{ethYellowpaper}.
+
 \subsection{Ethereum Metropolis e Constantinople}
 
-Qui scrivo del consenso e della transizione da PoW a PoS
-Magari anche forks?
+Sezione (forse) opzionale, scrivo della transizione in corso da PoW a PoS in Ethereum, l'aggiunta di EiP (Ethereum imporvement Proposals) per contrastare problemi di scalabilità con vari miglioramenti, per esempio EVM diventa più efficiente ecc. 
+È un fork quindi posso brevemente spiegare la differenza tra soft e hard forks.
 
 \section{Smart Contracts}
+
+Una delle potenzialità più promettenti di Ethereum deriva dall’implementazione di un linguaggio di programmazione Turing completo, il quale permette di scrivere contratti (intelligenti) chiamati per l’appunto Smart Contracts. Il termine è stato coniato da Nick Szabo, nel 1994 che lo definisce come "protocollo di transazione computerizzato che esegue i termini di un contratto"\footfullcite{SzaboSmartContract}. Una definizione sempre attuale che nel caso del paradigma, soggetto di questa tesi, può essere espressa come contratto o programma immutabile situato direttamente sulla blockchain. Come già detto nella sezione precedente i contratti fanno parte dello stato della rete e quindi hanno un vero e proprio indirizzo con la possibilità di effettuare operazioni automatiche. Quando sono soddisfatte le
+certe condizioni descritte nel codice, vengono automaticamente avviate specifiche azioni, anch'esse definite nel codice.
 
 \subsection{Solidity}
 
