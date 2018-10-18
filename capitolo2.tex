@@ -31,7 +31,7 @@ Riassumendo, la visione del progetto Ethereum è quella di creare un computer de
 \label{fig:ArchitetturaBlockchain}
 \end{figure}
 
-In relazione al classico modello client-server nel modello decentralizzato lo strato back-end è direttamente implementato nella blockchain attraverso gli smart contracts. L’esecuzione della logica dei contratti avviene grazie alla macchina virtuale Ethereum (EVM) eseguita da ciascun nodo della rete estendendo così il concetto di database distribuito con la nozione di calcolo distribuito (distributed computing\footfullcite{wikidistrComp}). Ethereum prevede un meccanismo di incentivi incorporato nel sistema di consenso della rete attraverso l’uso di una criptovaluta chiamata Ether. La logica transazionale (estesa con i smart contracts) in relazione alla complessità di calcoli computazionali è regolata da un costo espresso in unità di Gas corrispondente a una frazione di Ether. Si tratta di un meccanismo grazie al quale è possibile prevenire lo spam dovuto ad esempio all’esecuzione di programmi non terminabili.
+In relazione al classico modello client-server nel modello decentralizzato lo strato back-end è direttamente implementato nella blockchain attraverso gli smart contracts. L’esecuzione della logica dei contratti avviene grazie alla macchina virtuale Ethereum (EVM) eseguita da ciascun nodo della rete estendendo così il concetto di database distribuito con la nozione di calcolo distribuito (distributed computing\footfullcite{wikidistrComp}). Ethereum prevede un meccanismo di incentivi incorporato nel sistema di consenso della rete attraverso l’uso di una criptovaluta chiamata Ether. La logica transazionale (estesa con i smart contracts) in relazione alla complessità di calcoli computazionali è regolata da un costo espresso in unità di Gas corrispondente a una frazione di Ether. Si tratta di un meccanismo grazie al quale è possibile prevenire lo spam dovuto ad esempio all’esecuzione di programmi che non terminano in un tempo finito.
 
 In questo capitolo verranno analizzate queste modifiche ed espansioni della blockchain Ethereum.
 
@@ -72,17 +72,12 @@ Analogamente a quanto detto per i Merkle Trees, in Patricia Trees grazie all'app
 
 Dunque in relazione al concetto di blocco illustrato nel capitolo 2.1, la figura \ref{fig:BloccoEthereumSemplif} rappresenta una semplificazione del blocco Ethereum (per la completa lista delle proprietà si rimanda alla sezione 4.3. "The Block" del Yellowpaper Ethereum\footfullcite{ethYellowpaper}).
 
-Un aumento della complessità delle transazioni ha come conseguenza diretta l’espansione dell’intero stato della rete Ethereum. In questa implementazione, per lo stato della rete si intende essenzialmente lo stato di tutti gli account della blockchain (inclusi account esterni e contratti). Lo stato della rete è mutabile a causa della presenza degli smart contracts e deve essere memorizzato perché può cambiare in qualunque momento in seguito all’esecuzione automatica dei contratti. 
+Un aumento della complessità delle transazioni ha come conseguenza diretta l’espansione dell’intero stato della rete Ethereum. In questa implementazione, per lo stato della rete si intende essenzialmente lo stato di tutti gli account della blockchain (inclusi account esterni e contratti). Lo stato della rete è mutabile a causa della presenza degli smart contracts e deve essere memorizzato perché può cambiare in qualunque momento in seguito all’esecuzione automatica dei contratti. Se la struttura Merkle Tree una volta creata veniva mantenuta in maniera immutabile, in Ethereum è neccessario tenere conto di modifiche frequenti dello stato. 
+
 L’altra novità del blocco Ethereum (in figura \ref{fig:BloccoEthereumSemplif}) è la radice delle ricevute. Ogni blocco contiene ricevute permanenti delle transazioni relative al blocco che le contengono.
 
-\begin{figure}[H]
-\centering
-\includegraphics[width=1\textwidth]{immagini/patricia_trie.png}
-\caption{Struttura di patricia trie}
-\label{fig:mesh6}
-\end{figure}
-
-Patricia Tree facilità l'inserzione, l'eliminazione e l'aggiornamento di dati, obiettivi importanti per questioni di efficienza in una situazione dove lo stato della rete necessita di aggiornamenti frequenti. Per una descrizione formale dei vantaggi inerenti a questa struttura dati si rimanda all’appendice D, “Modified Merkle Patricia Tree” del Yellowpaper Ethereum\footfullcite{ethYellowpaper}.
+Patricia Tree facilità l'inserzione, l'eliminazione e l'aggiornamento di dati, obiettivi importanti per questioni di efficienza in una situazione dove lo stato della rete necessita di aggiornamenti frequenti. Infine nelle applicazioni reali permette agli utenti di fare ricerche come ad esempio, trovare una data istanza di un evento X (ad esempio: inserimento di un oggetto nella blockchain) fatta da un utente Y con un certo indirizzo negli ultimi Z giorni.
+Per una descrizione formale di questa struttura dati si rimanda all’appendice D, “Modified Merkle Patricia Tree” del Yellowpaper Ethereum\footfullcite{ethYellowpaper}.
 
 \subsection{Ethereum Metropolis e Constantinople}
 
@@ -91,13 +86,89 @@ Sezione (forse) opzionale, scrivo della transizione in corso da PoW a PoS in Eth
 
 \section{Smart Contracts}
 
-Una delle potenzialità più promettenti di Ethereum deriva dall’implementazione di un linguaggio di programmazione Turing completo, il quale permette di scrivere contratti (intelligenti) chiamati per l’appunto Smart Contracts. Il termine è stato coniato da Nick Szabo, nel 1994 che lo definisce come "protocollo di transazione computerizzato che esegue i termini di un contratto"\footfullcite{SzaboSmartContract}. Una definizione sempre attuale che nel caso del paradigma, soggetto di questa tesi, può essere espressa come contratto o programma immutabile situato direttamente sulla blockchain. Come già detto nella sezione precedente i contratti fanno parte dello stato della rete e quindi hanno un vero e proprio indirizzo con la possibilità di effettuare operazioni automatiche. Quando sono soddisfatte le
-certe condizioni descritte nel codice, vengono automaticamente avviate specifiche azioni, anch'esse definite nel codice.
+Una delle potenzialità più promettenti di Ethereum deriva dall’implementazione di un linguaggio di programmazione Turing completo il quale permette di scrivere contratti (intelligenti) chiamati per l’appunto Smart Contracts. Il termine è stato coniato da Nick Szabo nel 1994 che, lo definisce come un "protocollo di transazione computerizzato che esegue i termini di un contratto\footfullcite{SzaboSmartContract}". Una definizione sempre attuale che nel caso del paradigma soggetto di questa tesi, può essere espressa come contratto o programma immutabile situato direttamente sulla blockchain. Come già detto nella sezione precedente, i contratti fanno parte dello stato della rete e quindi hanno un vero e proprio indirizzo con le stesse proprietà di un account utente. Quando vengono soddisfatte certe condizioni descritte nel codice, automaticamente verranno avviate specifiche azioni anch'esse definite nel codice del contratto.
+
+I contratti una volta creati e quindi situati sulla blockchain ereditano le proprietà del paradigma. Sono immutabili, cioè una volta creati non possono essere più modificati, il loro codice è trasparente e quindi consultabile da qualsiasi utente e infine sono distribuiti, il risultato delle azioni compiute nei contratti può essere validato o controllato da tutti.
+
+Queste caratteristiche favoriscono la disintermediazione e potenzialmente la nascita di una situazione dove il codice definito nei contratti diventa l’espressione dei vincoli specificati nelle normative legali. Un esempio significativo dei vantaggi derivati dall'utilizzo di questi contratti può essere fatto analizzando il servizio  di finanziamento collettivo Kickstarter, basato sull'architettura tradizionale client-server.
+\\
+\begin{figure}[H]
+\centering
+\includegraphics[width=1\textwidth]{immagini/kickstarter.png}
+\caption{Ethereum: Finanziamento collettivo}
+\label{fig:Kickstarter}
+\end{figure}
+
+Il procedimento è esemplificato in figura \ref{fig:Kickstarter}, supportare un progetto con Kickstarter necessita di almeno due intermediari. Il sistema di pagamento Amazon il quale addebita circa 3-5 percento della somma totale e lo stesso servizio Kickstarter che guadagna il cinque per cento dei fondi raccolti. In un'applicazione analoga costruita su Ethereum è possibile fare a meno delle commissioni dovute agli intermediari mantenendo un elevato livello di sicurezza. In entrambi i casi se la raccolta non viene completata entro il termine specificato gli importi verranno restituiti agli utenti. I contratti sostituiscono anche la parte back-end gestita dall'intermediario garantendo che, dopo una certa scadenza definita nel contratto gli importi saranno restituiti agli indirizzi che hanno contributo alla raccolta. 
+
+Importante notare che la scrittura di contratti immutabili deve essere preceduta da un’accurata fase di test automatizzati e simulazioni in modo da individuare eventuali errori e comportamenti non previsti dei programmi che potrebbero avere gravi conseguenze una volta pubblicati sulla rete.
 
 \subsection{Solidity}
 
+Solidity è uno dei principali linguaggi di programmazione orientato alla scrittura dei contratti sulla blockchain\footfullcite{solidity}. Implementato da Ethereum è un linguaggio ad alto livello, fortemente tipato, supporta il meccanismo di eredità e ha una sintassi ispirata a quella di C++, Python e Javascript.
+Un contratto Solidity è dunque una collezione di codice incapsulato nelle funzioni e di dati che formano lo stato del contratto (permanentemente memorizzato sulla blockchain) e che risiedono sotto uno specifico indirizzo della blockchain Ethereum.
+\\
+\begin{lstlisting}[caption={Esempio contratto Solidity},language=JavaScript]
+pragma solidity ^0.4.25;
+
+contract storeNum {
+  uint256 number;
+  address owner;
+
+  modifier onlyOwner { 
+    require(msg.sender == owner);
+    _;
+  }
+  
+  constructor(uint256 _number) public {
+    number = _number;
+    owner = msg.sender;
+  }
+
+  function changeNum(uint256 _newNumber) public onlyOwner {
+    number = _newNumber;
+  }
+}
+\end{lstlisting}
+
+Questo semplice esempio di contratto “storeNum” permette al suo creatore di memorizzare e modificare un numero naturale. Analizzare questo esempio può essere utile per introdurre alcune novità del linguaggio.
+
+\renewcommand\labelitemii{\textbullet}
+\begin{itemize}
+\item \emph{pragma} (riga 1) definisce la versione del compilatore Solidity da usare per il contratto.
+\item \emph{contract storeNum} (righe 3, 5) inizializza il contratto “storeNum” con due variabili di stato: number, può contenere un numero positivo di 256bit e owner che potrà contenere un indirizzo Ethereum di 20byte.
+\item \emph{modifier onlyOwner} (righe 7,10) definisce un insieme di condizioni da applicare a una o più funzioni. Spesso viene usato per definire una guardia di controllo dell'accesso alle specifiche funzioni. In questo caso controlla che l'indirizzo che chiama il contratto sia equivalente a quello di chi lo ha creato.
+    \begin{itemize}
+        \item \emph{require} è un'istruzione che può creare un'eccezione con il conseguente ripristino dello stato del contratto a quello immediatamente antecedente alla sua chiamata. Require è fondamente per la gestione degli errori in Solidity, è buona regola utilizzarlo il prima possibile per non intercorrere nei costi dovuti all'esecuzione di istruzioni che devono soddisfare certi requisiti o produrre errori. 
+        \item \emph{msg.sender} è un'istruzione predefinita di Solidity, restituisce l'indirizzo che, al momento della chiamata, sta interagendo con il contratto.
+        \item {\_}; è un'istruzione specifica dei modifier, stabilisce il punto nel quale viene inserito il corpo della funzione da essa controllata. Dunque, se il flusso di esecuzione del programma non viene interrotto fino a questo punto allora solo adesso verrà eseguito il codice della funzione.
+    \end{itemize}
+\item \emph{constructor} (righe 12, 15) funziona esattamente come in altri linguaggi, al momento della creazione il contratto viene inizializzato con valori specificati nel costruttore.
+\item \emph{changeNum} (righe 17, 19) questa funzione permette di modificare il valore memorizzato nella variabile di stato number. È controllata dal modifier onlyOwner e quindi verrà eseguita solo se viene chiamata dall’indirizzo che ha creato il contratto altrimenti nessun cambiamento di stato verrà effettuato nel contratto. 
+\end{itemize}
+
+Un’ultima considerazione sull’esempio del contratto riguarda la visibilità e l’accesso alle funzioni dichiarate. In Solidity le funzioni di default sono pubbliche (public) e quindi possono essere chiamate ed eseguite da tutti. Pertanto, è raccomandabile specificare questo parametro nella dichiarazione stessa. La documentazione, già citata prevede parametri tra cui private (solo le funzioni all’interno del contratto in cui sono contenute potranno chiamare questa funzione), view (per funzioni che non cambiano lo stato del contratto) e molte altre. Un modo immediato per provare ed eseguire i contratti (come l'esempio del contratto storeNum di questa sezione) senza la necessità di operare sulla blockchain è quello di usare il compilatore ufficiale Remix\footfullcite{remix} di Ethereum.
+
+Il passo successivo, supponendo che il contratto sia corretto e terminabile, il codice Solidity verrà compilato in byte-code eseguito da EVM in maniera simile a come avviene con JAVA e l’interprete JVM\footfullcite{wikiJVM}.
+
+
 \subsection{Ethereum Virtual Machine}
+
+Ethereum Virtual Machine o EVM, è una macchina virtuale che viene eseguita da ciascun partecipante della rete Ethereum. I contratti scritti in un linguaggio ad alto livello come ad esempio Solidity sono compilati in byte-code EVM dove ogni byte rappresenta una specifica istruzione di basso livello chiamata opcode\footfullcite{opcode}, eseguibile dalla macchina virtuale. L’esecuzione avviene in modalità protetta (\emph{sandobox}) durante la quale il codice eseguito è isolato, l’EVM (durante il \emph{runtime}) non ha accesso alla rete, ai file locali di sistema o altri processi in esecuzione. A livello della rete tutti gli utenti eseguono in maniera indipendente i calcoli sulla EVM definibile quindi come un computer globale condiviso o \emph{world computer}. È una componente fondamentale per la decentralizzazione e la creazione del consenso distribuito nella blockchain Ethereum.
+
+Formalmente la EVM spesso è definita come una macchina quasi Turing completa. Questa affermazione deriva da un’ulteriore vincolo legato al costo computazionale delle istruzioni eseguite al suo interno misurato in gas, un parametro che limita la quantità di computazione che può essere compiuta durante l’esecuzione\footfullcite{ethYellowpaper}. Ricapitolando a livello dell'implementazione, la EVM assume un ruolo centrale per l'applicazione dei concetti descritti nelle sezioni precedenti. Concetti relativi alle transazioni, al calcolo e consenso distribuito e al funzionamento delle blockchain nel caso concreto della piattaforma Ethereum.
 
 \subsection{Gas}
 
+Per quanto riguarda il concetto del costo della computazione, si è visto che tutte le transazioni della rete Ethereum vengono calcolate attraverso la EVM. Ad ogni istruzione di basso livello, simile al codice assembly è associato un costo misurato in Gas. Gas è l'unità più piccola di Ether...
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=1\textwidth]{immagini/gas.png}
+\caption{Gas: Esempio calcolo commissioni}
+\label{fig:GasEth}
+\end{figure}
+%Uno zero in troppo nel risultato...
 \section{Data storage}
+--Da fare
+\subsection{IPFS}
