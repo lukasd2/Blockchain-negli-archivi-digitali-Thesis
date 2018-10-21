@@ -99,7 +99,7 @@ Queste caratteristiche favoriscono la disintermediazione e potenzialmente la nas
 \label{fig:Kickstarter}
 \end{figure}
 
-Il procedimento è esemplificato in figura \ref{fig:Kickstarter}, supportare un progetto con Kickstarter necessita di almeno due intermediari. Il sistema di pagamento Amazon il quale addebita circa 3-5 percento della somma totale e lo stesso servizio Kickstarter che guadagna il cinque per cento dei fondi raccolti. In un'applicazione analoga costruita su Ethereum è possibile fare a meno delle commissioni dovute agli intermediari mantenendo un elevato livello di sicurezza. In entrambi i casi se la raccolta non viene completata entro il termine specificato gli importi verranno restituiti agli utenti. I contratti sostituiscono anche la parte back-end gestita dall'intermediario garantendo che, dopo una certa scadenza definita nel contratto gli importi saranno restituiti agli indirizzi che hanno contributo alla raccolta. 
+Il procedimento è esemplificato in figura \ref{fig:Kickstarter}, sostenere un progetto con Kickstarter necessita di almeno due intermediari. Il sistema di pagamento Amazon il quale addebita circa 3-5 percento della somma totale e lo stesso servizio Kickstarter che guadagna il cinque per cento dei fondi raccolti. In un'applicazione analoga costruita su Ethereum è possibile fare a meno delle commissioni dovute agli intermediari mantenendo un elevato livello di sicurezza. In entrambi i casi se la raccolta non viene completata entro il termine specificato gli importi verranno restituiti agli utenti. I contratti sostituiscono anche la parte back-end gestita dall'intermediario garantendo che, dopo una certa scadenza definita nel contratto gli importi saranno restituiti agli indirizzi che hanno contributo alla raccolta. 
 
 Importante notare che la scrittura di contratti immutabili deve essere preceduta da un’accurata fase di test automatizzati e simulazioni in modo da individuare eventuali errori e comportamenti non previsti dei programmi che potrebbero avere gravi conseguenze una volta pubblicati sulla rete.
 
@@ -137,20 +137,19 @@ Questo semplice esempio di contratto “storeNum” permette al suo creatore di 
 \begin{itemize}
 \item \emph{pragma} (riga 1) definisce la versione del compilatore Solidity da usare per il contratto.
 \item \emph{contract storeNum} (righe 3, 5) inizializza il contratto “storeNum” con due variabili di stato: number, può contenere un numero positivo di 256bit e owner che potrà contenere un indirizzo Ethereum di 20byte.
-\item \emph{modifier onlyOwner} (righe 7,10) definisce un insieme di condizioni da applicare a una o più funzioni. Spesso viene usato per definire una guardia di controllo dell'accesso alle specifiche funzioni. In questo caso controlla che l'indirizzo che chiama il contratto sia equivalente a quello di chi lo ha creato.
+\item \emph{modifier onlyOwner} (righe 7, 10) definisce un insieme di condizioni da applicare a una o più funzioni. Spesso viene usato per definire una guardia di controllo dell'accesso alle specifiche funzioni. In questo caso controlla che l'indirizzo che chiama il contratto sia equivalente a quello di chi lo ha creato.
     \begin{itemize}
-        \item \emph{require} è un'istruzione che può creare un'eccezione con il conseguente ripristino dello stato del contratto a quello immediatamente antecedente alla sua chiamata. Require è fondamente per la gestione degli errori in Solidity, è buona regola utilizzarlo il prima possibile per non intercorrere nei costi dovuti all'esecuzione di istruzioni che devono soddisfare certi requisiti o produrre errori. 
+        \item \emph{require} è un'istruzione che può creare un'eccezione con il conseguente ripristino dello stato del contratto a quello immediatamente antecedente alla sua chiamata. Require è fondamente per la gestione degli errori in Solidity, è buona regola utilizzarlo il prima possibile per non intercorrere nei costi dovuti all'esecuzione di istruzioni che devono soddisfare certi requisiti oppure possono produrre errori. 
         \item \emph{msg.sender} è un'istruzione predefinita di Solidity, restituisce l'indirizzo che, al momento della chiamata, sta interagendo con il contratto.
         \item {\_}; è un'istruzione specifica dei modifier, stabilisce il punto nel quale viene inserito il corpo della funzione da essa controllata. Dunque, se il flusso di esecuzione del programma non viene interrotto fino a questo punto allora solo adesso verrà eseguito il codice della funzione.
     \end{itemize}
 \item \emph{constructor} (righe 12, 15) funziona esattamente come in altri linguaggi, al momento della creazione il contratto viene inizializzato con valori specificati nel costruttore.
-\item \emph{changeNum} (righe 17, 19) questa funzione permette di modificare il valore memorizzato nella variabile di stato number. È controllata dal modifier onlyOwner e quindi verrà eseguita solo se viene chiamata dall’indirizzo che ha creato il contratto altrimenti nessun cambiamento di stato verrà effettuato nel contratto. 
+\item \emph{changeNum} (righe 17, 19) questa funzione permette di modificare il valore memorizzato nella variabile di stato number. È controllata dal modifier onlyOwner e quindi verrà eseguita solo se viene chiamata dall’indirizzo che ha creato il contratto altrimenti nessun cambiamento di stato verrà effettuato nel contratto. Questa modifica non pregiudica l'immutabilità dei dati, il valore storico della variabile number sarà sempre contenuto nei blocchi precedenti.
 \end{itemize}
 
-Un’ultima considerazione sull’esempio del contratto riguarda la visibilità e l’accesso alle funzioni dichiarate. In Solidity le funzioni di default sono pubbliche (public) e quindi possono essere chiamate ed eseguite da tutti. Pertanto, è raccomandabile specificare questo parametro nella dichiarazione stessa. La documentazione, già citata prevede parametri tra cui private (solo le funzioni all’interno del contratto in cui sono contenute potranno chiamare questa funzione), view (per funzioni che non cambiano lo stato del contratto) e molte altre. Un modo immediato per provare ed eseguire i contratti (come l'esempio del contratto storeNum di questa sezione) senza la necessità di operare sulla blockchain è quello di usare il compilatore ufficiale Remix\footfullcite{remix} di Ethereum.
+Un’ultima considerazione sull’esempio del contratto riguarda la visibilità e l’accesso alle funzioni dichiarate. In Solidity le funzioni sono di default pubbliche (\emph{public}) e quindi possono essere chiamate ed eseguite da tutti. Pertanto, è raccomandabile specificare questo parametro nella dichiarazione della funzione stessa. La documentazione già citata prevede parametri tra cui private (solo le funzioni all’interno del contratto in cui sono contenute potranno chiamare questa funzione), view (per funzioni che non cambiano lo stato del contratto) e molte altre. Un modo immediato per provare ed eseguire i contratti (come l'esempio del contratto storeNum di questa sezione) senza la necessità di operare sulla blockchain è quello di usare il compilatore ufficiale Remix\footfullcite{remix} di Ethereum.
 
-Il passo successivo, supponendo che il contratto sia corretto e terminabile, il codice Solidity verrà compilato in byte-code eseguito da EVM in maniera simile a come avviene con JAVA e l’interprete JVM\footfullcite{wikiJVM}.
-
+Supponendo che il contratto sia corretto e termini in un tempo finito, il passo successivo consiste nella compilazione del codice Solidity in byte-code eseguibile da EVM in maniera simile a come avviene con JAVA e la componente JVM\footfullcite{wikiJVM}.
 
 \subsection{Ethereum Virtual Machine}
 
@@ -160,7 +159,8 @@ Formalmente la EVM spesso è definita come una macchina quasi Turing completa. Q
 
 \subsection{Gas}
 
-Per quanto riguarda il concetto del costo della computazione, si è visto che tutte le transazioni della rete Ethereum vengono calcolate attraverso la EVM. Ad ogni istruzione di basso livello, simile al codice assembly è associato un costo misurato in Gas. Gas è l'unità più piccola di Ether...
+Il costo della computazione è rappresentato attraverso Gas, un’unità di misura corrispondente a una frazione di Ether. Gas può essere considerato come una specie di carburante per la EVM, ogni istruzione eseguita al suo interno consumerà una quantità predefinita di Gas. A livello di transazioni l’utente può impostare l’ammontare di Gas che è disposto a spendere per eseguire una certa transazione. In particolare, Gas price indica il prezzo misurato in \emph{gwei}, dove \(10^{9}\) gwei corrispondono a 1 ether cioè 1 ether equivale a 1,000,000,000 gwei\footfullcite{etherUnits}. Il parametro Gas start (in questo contesto chiamato anche Gas limit) impone un limite alla quantità di Gas per la quale l’utente è disposto a pagare il prezzo stabilito.
+Infine, il prodotto tra questi due valori, Gas price e Gas start, indica il limite superiore del costo di esecuzione che l’utente vorrebbe spendere così come nel seguente esempio in figura \ref{fig:GasEth}.
 
 \begin{figure}[H]
 \centering
@@ -169,6 +169,13 @@ Per quanto riguarda il concetto del costo della computazione, si è visto che tu
 \label{fig:GasEth}
 \end{figure}
 %Uno zero in troppo nel risultato...
+
+Le transazioni verranno eseguite dalla EVM finché il programma termina oppure termina la quantità di gas disponibile per la transazione. Nel caso di una transazione avvenuta con successo al mittente sarà rimborsato il costo di Gas non utilizzato, altrimenti il Gas verrà consumato e la EVM produrrà un'eccezione \emph{out of gas}. Se la quantità di gas risulta insufficiente per l'esecuzione di una data transazione tutti i cambiamenti effettuati fino a quel punto saranno scartati (ritorno allo stato prima della transazione) mentre il Gas sarà consumato e quindi non verrà restituito al mittente\footfullcite{ethYellowpaper}.
+Attenendosi alle condizioni della rete e i prezzi di transazioni concluse con successo è possibile fare stime affidabili circa il costo e il tempo di una transazione\footnote{ETH Gas Station (https://ethgasstation.info/) è uno dei siti principali che effettua il monitoraggio dei costi nella rete Ethereum}.
+
 \section{Data storage}
+
+Una delle operazioni più costose nelle blockchain è la memorizzazione. Le blockchain non sono adatte per la memorizzazione di file di grandi dimensioni... 
+
 --Da fare
 \subsection{IPFS}
