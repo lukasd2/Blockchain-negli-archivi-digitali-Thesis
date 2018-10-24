@@ -61,7 +61,7 @@ La struttura dati usata in Ethereum prende il nome di Patricia Tree (o trie) e r
 \item Radice delle ricevute (delle transazioni)
 \end{itemize}
 
-Analogamente a quanto detto per i Merkle Trees, in Patricia Trees grazie all'applicazione ricorsiva di funzioni hash crittografiche (in Ethereum viene usato lo standard SHA-3\footfullcite{sha3Wiki} e in particolare l'algoritmo Keccak256) la radice diventa una sorta di impronta digitale per l'intera struttura dati sottostante. Ogni modifica a qualsiasi livello della struttura farà cambiare il risultato dell'applicazione di funzioni hash sul ramo interessato dalla modifica fino alla radice stessa. 
+Analogamente a quanto detto per i Merkle Trees, in Patricia Trees grazie all'applicazione ricorsiva di funzioni hash crittografiche (in Ethereum viene usato lo standard SHA-3 e in particolare l'algoritmo Keccak256\footfullcite{sha3Wiki}) la radice diventa una sorta di impronta digitale per l'intera struttura dati sottostante. Ogni modifica a qualsiasi livello della struttura farà cambiare il risultato dell'applicazione di funzioni hash sul ramo interessato dalla modifica fino alla radice stessa. 
 
 \begin{figure}[H]
 \centering
@@ -72,25 +72,20 @@ Analogamente a quanto detto per i Merkle Trees, in Patricia Trees grazie all'app
 
 Dunque in relazione al concetto di blocco illustrato nel capitolo 2.1, la figura \ref{fig:BloccoEthereumSemplif} rappresenta una semplificazione del blocco Ethereum (per la completa lista delle proprietà si rimanda alla sezione 4.3. "The Block" del Yellowpaper Ethereum\footfullcite{ethYellowpaper}).
 
-Un aumento della complessità delle transazioni ha come conseguenza diretta l’espansione dell’intero stato della rete Ethereum. In questa implementazione, per lo stato della rete si intende essenzialmente lo stato di tutti gli account della blockchain (inclusi account esterni e contratti). Lo stato della rete è mutabile a causa della presenza degli smart contracts e deve essere memorizzato perché può cambiare in qualunque momento in seguito all’esecuzione automatica dei contratti. Se la struttura Merkle Tree una volta creata veniva mantenuta in maniera immutabile, in Ethereum è neccessario tenere conto di modifiche frequenti dello stato. 
+Un aumento della complessità delle transazioni ha come conseguenza diretta l’espansione dell’intero stato della rete Ethereum. In questa implementazione, per lo stato della rete si intende essenzialmente lo stato di tutti gli account della blockchain (inclusi account esterni e contratti). Lo stato della rete è mutabile a causa della presenza degli smart contracts e deve essere memorizzato perché può cambiare in qualunque momento in seguito all’esecuzione automatica dei contratti. Se la struttura Merkle Tree una volta creata veniva mantenuta in maniera immutabile, in Ethereum è neccessario tenere conto di modifiche frequenti dello stato.
 
 L’altra novità del blocco Ethereum (in figura \ref{fig:BloccoEthereumSemplif}) è la radice delle ricevute. Ogni blocco contiene ricevute permanenti delle transazioni relative al blocco che le contengono.
 
 Patricia Tree facilità l'inserzione, l'eliminazione e l'aggiornamento di dati, obiettivi importanti per questioni di efficienza in una situazione dove lo stato della rete necessita di aggiornamenti frequenti. Infine nelle applicazioni reali permette agli utenti di fare ricerche come ad esempio, trovare una data istanza di un evento X (ad esempio: inserimento di un oggetto nella blockchain) fatta da un utente Y con un certo indirizzo negli ultimi Z giorni.
 Per una descrizione formale di questa struttura dati si rimanda all’appendice D, “Modified Merkle Patricia Tree” del Yellowpaper Ethereum\footfullcite{ethYellowpaper}.
 
-\subsection{Ethereum Metropolis e Constantinople}
-
-Sezione (forse) opzionale, scrivo della transizione in corso da PoW a PoS in Ethereum, l'aggiunta di EiP (Ethereum imporvement Proposals) per contrastare problemi di scalabilità con vari miglioramenti, per esempio EVM diventa più efficiente ecc. 
-È un fork quindi posso brevemente spiegare la differenza tra soft e hard forks.
-
 \section{Smart Contracts}
 
-Una delle potenzialità più promettenti di Ethereum deriva dall’implementazione di un linguaggio di programmazione Turing completo il quale permette di scrivere contratti (intelligenti) chiamati per l’appunto Smart Contracts. Il termine è stato coniato da Nick Szabo nel 1994 che, lo definisce come un "protocollo di transazione computerizzato che esegue i termini di un contratto\footfullcite{SzaboSmartContract}". Una definizione sempre attuale che nel caso del paradigma soggetto di questa tesi, può essere espressa come contratto o programma immutabile situato direttamente sulla blockchain. Come già detto nella sezione precedente, i contratti fanno parte dello stato della rete e quindi hanno un vero e proprio indirizzo con le stesse proprietà di un account utente. Quando vengono soddisfatte certe condizioni descritte nel codice, automaticamente verranno avviate specifiche azioni anch'esse definite nel codice del contratto.
+Una delle potenzialità più promettenti di Ethereum deriva dall’implementazione di un linguaggio di programmazione Turing completo il quale permette di scrivere contratti (intelligenti) chiamati per l’appunto Smart Contracts. Il termine è stato coniato da Nick Szabo nel 1994 che, lo definisce come un "protocollo di transazione computerizzato che esegue i termini di un contratto\footfullcite{SzaboSmartContract}". Una definizione sempre attuale che nel caso del paradigma soggetto di questa tesi, può essere espressa come contratto o programma immutabile situato direttamente sulla blockchain. Come già detto nella sezione precedente, i contratti fanno parte dello stato della rete e quindi hanno un vero e proprio indirizzo con delle proprietà. Quando vengono soddisfatte certe condizioni descritte nel codice, automaticamente verranno avviate specifiche azioni anch'esse definite nel codice del contratto.
 
 I contratti una volta creati e quindi situati sulla blockchain ereditano le proprietà del paradigma. Sono immutabili, cioè una volta creati non possono essere più modificati, il loro codice è trasparente e quindi consultabile da qualsiasi utente e infine sono distribuiti, il risultato delle azioni compiute nei contratti può essere validato o controllato da tutti.
 
-Queste caratteristiche favoriscono la disintermediazione e potenzialmente la nascita di una situazione dove il codice definito nei contratti diventa l’espressione dei vincoli specificati nelle normative legali. Un esempio significativo dei vantaggi derivati dall'utilizzo di questi contratti può essere fatto analizzando il servizio  di finanziamento collettivo Kickstarter, basato sull'architettura tradizionale client-server.
+Queste caratteristiche favoriscono la disintermediazione e potenzialmente la nascita di una situazione dove il codice definito nei contratti diventa l’espressione dei vincoli specificati nelle normative legali. Un esempio significativo dei vantaggi derivati dall'utilizzo di questi contratti può essere fatto analizzando il servizio  di finanziamento collettivo Kickstarter\footfullcite{kickstarter}, basato sull'architettura tradizionale client-server.
 \\
 \begin{figure}[H]
 \centering
@@ -153,9 +148,9 @@ Supponendo che il contratto sia corretto e termini in un tempo finito, il passo 
 
 \subsection{Ethereum Virtual Machine}
 
-Ethereum Virtual Machine o EVM, è una macchina virtuale che viene eseguita da ciascun partecipante della rete Ethereum. I contratti scritti in un linguaggio ad alto livello come ad esempio Solidity sono compilati in byte-code EVM dove ogni byte rappresenta una specifica istruzione di basso livello chiamata opcode\footfullcite{opcode}, eseguibile dalla macchina virtuale. L’esecuzione avviene in modalità protetta (\emph{sandobox}) durante la quale il codice eseguito è isolato, l’EVM (durante il \emph{runtime}) non ha accesso alla rete, ai file locali di sistema o altri processi in esecuzione. A livello della rete tutti gli utenti eseguono in maniera indipendente i calcoli sulla EVM definibile quindi come un computer globale condiviso o \emph{world computer}. È una componente fondamentale per la decentralizzazione e la creazione del consenso distribuito nella blockchain Ethereum.
+Ethereum Virtual Machine o EVM, è una macchina virtuale che viene eseguita da ciascun partecipante della rete Ethereum. I contratti scritti in un linguaggio ad alto livello come ad esempio Solidity sono compilati in byte-code EVM che, nell'insieme rappresenta una sequenza di istruzioni di basso livello chiamate opcode\footfullcite{opcode} eseguibili dalla macchina virtuale. L’esecuzione avviene in modalità protetta (\emph{sandobox}) durante la quale il codice eseguito è isolato, l’EVM (durante il \emph{runtime}) non ha accesso alla rete, ai file locali di sistema o altri processi in esecuzione. A livello della rete tutti gli utenti eseguono in maniera indipendente i calcoli sulla EVM definibile quindi come un computer globale condiviso o \emph{world computer}.
 
-Formalmente la EVM spesso è definita come una macchina quasi Turing completa. Questa affermazione deriva da un’ulteriore vincolo legato al costo computazionale delle istruzioni eseguite al suo interno misurato in gas, un parametro che limita la quantità di computazione che può essere compiuta durante l’esecuzione\footfullcite{ethYellowpaper}. Ricapitolando a livello dell'implementazione, la EVM assume un ruolo centrale per l'applicazione dei concetti descritti nelle sezioni precedenti. Concetti relativi alle transazioni, al calcolo e consenso distribuito e al funzionamento delle blockchain nel caso concreto della piattaforma Ethereum.
+Formalmente la EVM spesso è definita come una macchina quasi Turing completa. Questa affermazione deriva da un’ulteriore vincolo legato al costo computazionale delle istruzioni eseguite al suo interno, misurato in gas, un parametro che limita la quantità di computazione che può essere compiuta durante l’esecuzione\footfullcite{ethYellowpaper}. Ricapitolando a livello dell'implementazione, la EVM assume un ruolo centrale per l'applicazione dei concetti descritti nelle sezioni precedenti. Concetti relativi alle transazioni, al calcolo e consenso distribuito nella blockchain Ethereum.
 
 \subsection{Gas}
 
@@ -171,11 +166,14 @@ Infine, il prodotto tra questi due valori, Gas price e Gas start, indica il limi
 %Uno zero in troppo nel risultato...
 
 Le transazioni verranno eseguite dalla EVM finché il programma termina oppure termina la quantità di gas disponibile per la transazione. Nel caso di una transazione avvenuta con successo al mittente sarà rimborsato il costo di Gas non utilizzato, altrimenti il Gas verrà consumato e la EVM produrrà un'eccezione \emph{out of gas}. Se la quantità di gas risulta insufficiente per l'esecuzione di una data transazione tutti i cambiamenti effettuati fino a quel punto saranno scartati (ritorno allo stato prima della transazione) mentre il Gas sarà consumato e quindi non verrà restituito al mittente\footfullcite{ethYellowpaper}.
-Attenendosi alle condizioni della rete e i prezzi di transazioni concluse con successo è possibile fare stime affidabili circa il costo e il tempo di una transazione\footnote{ETH Gas Station (https://ethgasstation.info/) è uno dei siti principali che effettua il monitoraggio dei costi nella rete Ethereum}.
+Attenendosi alle condizioni della rete e i prezzi di transazioni concluse con successo è possibile fare stime affidabili circa il costo e il tempo di una transazione\footnote{ETH Gas Station (https://ethgasstation.info/) è uno dei siti principali che effettua il monitoraggio dei costi nella rete Ethereum}. Il concetto di Gas è puramente riferito ai calcoli, non è possibile mandare o ricevere unità di Gas, è una misura intesa come una costante con un proprio costo indipendente dalle variazioni di valore di Ether.
 
 \section{Data storage}
 
-Una delle operazioni più costose nelle blockchain è la memorizzazione. Le blockchain non sono adatte per la memorizzazione di file di grandi dimensioni... 
+Una delle operazioni più costose nelle blockchain è la memorizzazione\footnote{Indicata dall'opcode "SSTORE" contenuto nell'appendice G, “Fee Schedule” di Ethereum Yellowpaper}. Memorizzare in maniera permanente file di grandi dimensioni che, dovranno essere replicati e sincronizzati da tutti i partecipanti della rete implica un costo elevato espresso in termini di Gas. Dunque, le blockchain pubbliche, nonostante possano essere definibili come basi di dati distribuite, sono inadeguate per applicazioni che richiedo un uso significativo in termini di spazio di memoria. La regola di base è quella di includere direttamente nelle blockchain soltanto le informazioni, come ad esempio i termini di un contratto, che dovranno godere dei benefici della rete (immutabilità, permanenza, trasparenza ecc.) e memorizzare il resto attraverso servizi esterni.
 
---Da fare
+Tuttavia è evidente che l'uso di servizi di Cloud Storage tradizionali limiterebbe i vantaggi delle applicazioni propriamente decentralizzate. Per questo la nascita della tecnologia blockchain è accompagnata dallo sviluppo di sistemi di memorizzazione basate sugli stessi principi.
+
 \subsection{IPFS}
+
+IPFS (InterPlanetary File System\footfullcite{ipfs}).
