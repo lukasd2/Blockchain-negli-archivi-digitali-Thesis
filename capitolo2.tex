@@ -26,8 +26,8 @@ Riassumendo, la visione del progetto Ethereum è quella di creare un computer de
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=1\textwidth]{immagini/architetturav1.png}
-\caption{Architettura blockchain}
+\includegraphics[width=1\textwidth]{immagini/archit.png}
+\caption{Architettura Blockchain}
 \label{fig:ArchitetturaBlockchain}
 \end{figure}
 
@@ -90,7 +90,7 @@ Queste caratteristiche favoriscono la disintermediazione e potenzialmente la nas
 \begin{figure}[H]
 \centering
 \includegraphics[width=1\textwidth]{immagini/kickstarter.png}
-\caption{Ethereum: Finanziamento collettivo}
+\caption{Ethereum: Esempio Finanziamento Collettivo}
 \label{fig:Kickstarter}
 \end{figure}
 
@@ -160,10 +160,9 @@ Infine, il prodotto tra questi due valori, Gas price e Gas start, indica il limi
 \begin{figure}[H]
 \centering
 \includegraphics[width=1\textwidth]{immagini/gas.png}
-\caption{Gas: Esempio calcolo commissioni}
+\caption{Gas: Esempio Calcolo Commissioni}
 \label{fig:GasEth}
 \end{figure}
-%Uno zero in troppo nel risultato...
 
 Le transazioni verranno eseguite dalla EVM finché il programma termina oppure termina la quantità di Gas disponibile per la transazione. Nel caso di una transazione avvenuta con successo al mittente sarà rimborsato il costo di Gas non utilizzato, altrimenti il Gas verrà consumato e la EVM produrrà un'eccezione \emph{out of gas}. Se la quantità di carburante risulta insufficiente per l'esecuzione di una data transazione tutti i cambiamenti effettuati fino a quel punto saranno scartati (ritorno allo stato prima della transazione) mentre il Gas sarà consumato e quindi non verrà restituito al mittente\footfullcite{ethYellowpaper}.
 
@@ -171,13 +170,18 @@ Attenendosi alle condizioni della rete e riguardo i prezzi delle transazioni con
 
 \section{Data storage}
 
-Una delle operazioni più costose nelle blockchain è la memorizzazione\footnote{Indicata dall'opcode "SSTORE" contenuto nell'appendice G, “Fee Schedule” di Ethereum Yellowpaper}. Memorizzare in maniera permanente file di grandi dimensioni che, dovranno essere replicati e sincronizzati da tutti i partecipanti della rete implica un costo elevato espresso in termini di Gas. Dunque, le blockchain pubbliche, nonostante possano essere definibili come basi di dati distribuite, sono inadeguate per applicazioni che richiedono un uso significativo in termini di spazio di memoria. La regola di base è quella di includere direttamente nelle blockchain soltanto le informazioni, come ad esempio i termini di un contratto, che dovranno godere dei benefici della rete (immutabilità, permanenza, trasparenza ecc.) e memorizzare il resto attraverso servizi esterni.
+Una delle operazioni più costose nelle blockchain è la memorizzazione\footnote{Indicata dall'opcode "SSTORE" contenuto nell'appendice G, “Fee Schedule” di Ethereum Yellowpaper}. Memorizzare in maniera permanente file di grandi dimensioni che, dovranno essere replicati e sincronizzati da tutti i partecipanti della rete implica un costo elevato espresso in termini di Gas. Le blockchain pubbliche, nonostante possano essere definibili come basi di dati distribuite, sono inadeguate per applicazioni che richiedono un uso significativo in termini di spazio di memoria. La regola di base è quella di includere direttamente nelle blockchain soltanto le informazioni, come ad esempio i termini di un contratto, che dovranno godere dei benefici della rete (immutabilità, permanenza, trasparenza ecc.) e memorizzare il resto attraverso servizi esterni.
 
 Tuttavia, è evidente che l'uso di servizi di Cloud Storage tradizionali come AmazonS3, Microsoft Azure o altri sistemi centralizzati limiterebbe i vantaggi delle applicazioni propriamente decentralizzate. Per questo la nascita della tecnologia blockchain è accompagnata dallo sviluppo di sistemi di memorizzazione basate in tutto o in parte sugli stessi principi del paradigma blockchain. Attualmente sono in via di sviluppo molti sistemi di Storage decentralizzato, tra questi i principali Storj\footfullcite{storj}, Sia\footfullcite{sia}, BigchanDB\footfullcite{bigchainDB}, Ethereum Swarm\footfullcite{Swarm} e IPFS\footfullcite{ipfs}.
+
 Questi servizi promettono di usufruire delle novità delle blockchain favorendo la disintermediazione con la conseguente riduzione dei costi dovuti alla memorizzazione di dati e un maggiore controllo su di essi da parte degli utenti finali. In particolare, si è scelto IPFS per lo strato di memorizzazione dell'applicazione decentralizzata che accompagna questo lavoro.
 
 \subsection{IPFS}
 
-IPFS (InterPlanetary File System\footfullcite{ipfsWhitepaper}) è un progetto open-source i cui obiettivi vanno ben oltre l'offerta di un servizio di Storage distribuito. Lo scopo principale di IPFS è quello di costruire un file system globale distribuito basato su peer-to-peer.
+IPFS (InterPlanetary File System) è un progetto open-source i cui obiettivi vanno ben oltre l'offerta di un servizio di storage distribuito. Lo scopo principale di IPFS è quello di costruire un file system globale distribuito basato su peer-to-peer in modo da creare una nuova architettura Internet permanente e distribuita. I protocolli alla base di Internet attuale si sono sviluppati secondo livelli di astrazione aggiungendo negli anni via via nuove funzionalità, IPFS costituisce un tentativo di sostituzione e miglioramento di questi protocolli. 
 
--- DA FARE
+In particolare, riguardo al protocollo di trasmissione HTTP, la differenza sostanziale consiste nel passaggio da un architettura client-server basata su \emph{location based addressing} (indirizzamento in base alla posizione) a un architettura peer-to-peer basata sul \emph{content based addressing} (indirizzamento in base al contenuto). Questo implica una caratteristica importante che può giustificare la scelta di questa particolare tecnologia e la sua integrazione nelle applicazioni blockchain. La caratteristica menzionata riguarda l'indirizzamento delle informazioni in base al contenuto reso possibile grazie all'utilizzo dalle funzioni crittografiche di hash. Memorizzare un dato su IPFS genererà a partire dal contenuto un indirizzo hash che garantisce l'immutabilità del contenuto memorizzato. A livello dell'architettura, l'insieme degli indirizzi IPFS è archiviato attraverso la tabella di hash distribuita, DHT (\emph{Distributed Hash Table}\footfullcite{wikiDHT}). 
+
+Le tecnologie alla base di IPFS sono numerose e la loro descrizione esula dagli scopi di questa tesi, per approfondimenti si rimanda al Whitepaper IPFS\footfullcite{ipfsWhitepaper} che costituisce un punto di riferimento per lo studio della tecnologia. 
+
+La memorizzazione dei dati in maniera distribuita necessita, così come nelle blockchain di un sistema di incentivi. IPFS allo stato dell'arte non ha ancora implementato un meccanismo del genere e dunque non permette di memorizzare dati in maniera permanente. Lo sviluppo della tecnologia mira alla costruzione di un'infrastruttura che, una volta raggiunta una fase stabile permetterà di implementare questo tipo di meccanismi. Filecoin\footfullcite{filecoin} costituisce un esempio di servizio di storage implementato sulla blockchain che potrà essere integrato su IPFS.

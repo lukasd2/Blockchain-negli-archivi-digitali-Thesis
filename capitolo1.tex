@@ -217,8 +217,8 @@ I primi due elementi essenziali per poter effettuare una transazione sono: l’i
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=1\textwidth]{immagini/transazionetest.png}
-\caption{Transazioni: Trasferimento token}
+\includegraphics[width=1\textwidth]{immagini/transazioneFinal.png}
+\caption{Transazione: Trasferimento Token}
 \label{fig:TransazioneToken}
 \end{figure}
 
@@ -227,8 +227,8 @@ Nella transazione (si veda la fig. \ref{fig:TransazioneToken}), vengono inviati 
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=1\textwidth]{immagini/transazioneplaceholder2.png}
-\caption{Transazioni: Doppia spesa}
+\includegraphics[width=1\textwidth]{immagini/doubleSpend.png}
+\caption{Transazione: Doppia Spesa}
 \label{fig:TransazioneDoppiaSpesa}
 \end{figure}
 
@@ -242,7 +242,7 @@ Una nozione importante per il funzionamento del paradigma blockchain è relativa
 
 Nell’assenza di un’entità centrale l’obiettivo viene raggiunto applicando un sistema di ricompense che segue i principi della teoria dei giochi\footfullcite{wikiGameTheory}. Un modello ragionevole, dal punto di vista economico, cerca di mantenere un equilibrio tra ricompense previste per utenti che seguono le regole e punizioni per chi le trasgredisce. In precedenza (nel capitolo 2.2), si è visto che a intervalli di tempo regolari viene avviata una competizione al vincitore della quale spetta il potere di appendere un blocco alla catena e ricevere la ricompensa prevista. Detto questo i dettagli sono strettamente legati alle singole implementazioni della tecnologia. Generalmente si cerca di promuovere la cooperazione a beneficio della rete e quindi di tutti gli utenti. L'obiettivo finale è quello di costruire la fiducia in una rete non supervisionata, creando condizioni in cui i procedimenti di verifica o validazione siano ricompensati e quindi benefici per l’intero sistema.
 
-Un contesto decentralizzato implica anche l’adozione di regole di governance precise. Queste regole e procedure riguardano proprio la gestione e il controllo di questo fenomeno collettivom, messo in pratica, attraverso una rete decentralizzata. La governance riguarda tradizionalmente: la fiducia nelle istituzioni, enti centralizzati, governi ecc. Per l’oggetto di questa tesi la governance si fonda sulle tecnologie di regolamentazione basate sulla trasparenza, disponibilità di dati: immutabili e permanenti, esecuzione automatica di contratti (smart contracts di cui si parlerà nel capitolo 3.2) e una gestione comunitaria dell’intera rete.
+Un contesto decentralizzato implica anche l’adozione di regole di governance precise. Queste regole e procedure riguardano proprio la gestione e il controllo di questo fenomeno collettivo, messo in pratica, attraverso una rete decentralizzata. La governance riguarda tradizionalmente: la fiducia nelle istituzioni, enti centralizzati, governi ecc. Per l’oggetto di questa tesi la governance si fonda sulle tecnologie di regolamentazione basate sulla trasparenza, disponibilità di dati: immutabili e permanenti, esecuzione automatica di contratti (smart contracts di cui si parlerà nel capitolo 3.2) e una gestione comunitaria dell’intera rete.
 
 Secondo gli analisti della STOA (Science and Technology Options Assessment), gruppo di ricerca del parlamento europeo, le blockchain potrebbero portare alla diffusione di \emph{organizzazioni autonome decentralizzate} (DAO) governate dalla collettività. I potenziali sviluppi di un nuovo sistema di governance possono favorire la nascita di sistemi, organizzati non più gerarchicamente attraverso il controllo dall’alto verso il basso, ma più democratici ed efficienti, dotati di utilità sociale che rispecchia direttamente i valori perseguiti dalla comunità\footfullcite{eu-parl-paper}.
 
@@ -255,10 +255,9 @@ Introdotto questo problema della scalabilità, lo stato dell’arte della tecnol
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.6\textwidth]{immagini/trilemmascalab.png}
-\caption{Trilemma scalability}
+\caption{Trilemma Scalability}
 \label{fig:TrilemmaScalab}
 \end{figure}
-%c'è pure un errore nell'immagine nella parola scalabilità
 
 La combinazione delle proprietà individuate: la decentralizzazione, la scalabilità e la sicurezza,  della figura \ref{fig:TrilemmaScalab} prende il nome di \emph{trilemma scalability} \footfullcite{trilemmaScalab}. La difficoltà di mantenere un equilibrio, un compromesso tra queste tre proprietà è uno dei problemi principali del paradigma blockchain. Attualmente è in corso la ricerca sui metodi e soluzioni per ovviare alla necessità di sacrificare almeno una di queste tre proprietà. Un’analisi più approfondita esula dallo scopo di questa tesi ma è opportuno menzionare un certo numero di direzioni verso quali, al momento dello scrivere, tende la ricerca. Tra questo è lecito considerare come più promettenti le seguenti soluzioni: sharding, sidechains, plasma e molte altre.
 
