@@ -82,7 +82,7 @@ Tenendo in mente che l'impostazione di un blocco può contenere un numero di pro
 
 Ogni blocco è legato al blocco precedente tramite una funzione hash calcolata in base alle proprietà del blocco. Una funzione hash è una funzione matematica unidirezionale che accetta un input di lunghezza arbitraria e ne produce un output di lunghezza prefissata.
 
-È una delle componenti base di una struttura formata da sequenze di blocchi che a sua volta è paragonabile alla struttura di una lista concatenata (linked list) tramite puntatori. In entrambi i casi la struttura permette di identificare in maniera univoca la relazione precedente e successivo che intercorre tra due blocchi. Dunque, data la definizione della funzione hash, il suo risultato dipende dalle proprietà di ciascun blocco.
+È una delle componenti base di una struttura formata da sequenze di blocchi che a sua volta è paragonabile alla struttura di una lista concatenata (\emph{linked list}) tramite puntatori. In entrambi i casi la struttura permette di identificare in maniera univoca la relazione precedente e successivo che intercorre tra due blocchi. Dunque, data la definizione della funzione hash, il suo risultato dipende dalle proprietà di ciascun blocco.
 
 Senza entrare troppo in dettaglio, questo implica un insieme di proprietà "grande" su quale vengono calcolate le funzioni hash con la caratteristica che, anche una minima variazione di ciascun componente del dominio della funzione, molto probabilmente farà cambiare radicalmente il risultato calcolato.
 Nel seguente esempio si calcola la funzione hash applicando l'algoritmo SHA256 (Secure Hashing Algorithm\footfullcite{sha2Wiki}), utilizzata nelle blockchain (per esempio Bitcoin) per due input apparentemente simili: 
@@ -117,7 +117,7 @@ Gli alberi di hash sono una struttura dati utilizzata nelle blockchain. È una d
 \begin{figure}[H]
 \centering
 \includegraphics[width=1\textwidth]{immagini/hash_Trees.png}
-\caption{Struttura di un merkle tree}
+\caption{Struttura di Merkle Tree}
 \label{fig:MerkleTreeStruttura}
 
 \end{figure}

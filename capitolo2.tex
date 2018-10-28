@@ -182,6 +182,15 @@ IPFS (InterPlanetary File System) è un progetto open-source i cui obiettivi van
 
 In particolare, riguardo al protocollo di trasmissione HTTP, la differenza sostanziale consiste nel passaggio da un architettura client-server basata su \emph{location based addressing} (indirizzamento in base alla posizione) a un architettura peer-to-peer basata sul \emph{content based addressing} (indirizzamento in base al contenuto). Questo implica una caratteristica importante che può giustificare la scelta di questa particolare tecnologia e la sua integrazione nelle applicazioni blockchain. La caratteristica menzionata riguarda l'indirizzamento delle informazioni in base al contenuto reso possibile grazie all'utilizzo dalle funzioni crittografiche di hash. Memorizzare un dato su IPFS genererà a partire dal contenuto un indirizzo hash che garantisce l'immutabilità del contenuto memorizzato. A livello dell'architettura, l'insieme degli indirizzi IPFS è archiviato attraverso la tabella di hash distribuita, DHT (\emph{Distributed Hash Table}\footfullcite{wikiDHT}). 
 
+\begin{figure}[H]
+\centering
+\includegraphics[width=1\textwidth]{immagini/ipfsDHT.PNG}
+\caption{IPFS: Indirizzi Hash e DHT}
+\label{fig:ipfsDHT}
+\end{figure}
+
+Nella figura \ref{fig:ipfsDHT} si può vedere come la chiave (\emph{key}) generata a partire dal contenuto (\emph{data}) entra a far parte della rete distribuita (\emph{DHT}) di cui costituisce un indirizzo univoco. 
+
 Le tecnologie alla base di IPFS sono numerose e la loro descrizione esula dagli scopi di questa tesi, per approfondimenti si rimanda al Whitepaper IPFS\footfullcite{ipfsWhitepaper} che costituisce un punto di riferimento per lo studio della tecnologia. 
 
 La memorizzazione dei dati in maniera distribuita necessita, così come nelle blockchain di un sistema di incentivi. IPFS allo stato dell'arte non ha ancora implementato un meccanismo del genere e dunque non permette di memorizzare dati in maniera permanente. Lo sviluppo della tecnologia mira alla costruzione di un'infrastruttura che, una volta raggiunta una fase stabile permetterà di implementare questo tipo di meccanismi. Filecoin\footfullcite{filecoin} costituisce un esempio di servizio di storage implementato sulla blockchain che potrà essere integrato su IPFS.
