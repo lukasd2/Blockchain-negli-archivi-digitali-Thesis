@@ -52,13 +52,14 @@ Dunque con questo progetto si vuole dimostrare che è possibile adottare qualunq
 
 \section{Preparazione dell'ambiente di sviluppo}
 
-Lo sviluppo del progetto sulla blockchain Ethereum è accompagnato dalla presenza di numerosi strumenti forniti dalla comunità, in questa sezione sarà fornita la lista dei principali strumenti e delle dipendenze utilizzate durante la programmazione.
+Lo sviluppo del progetto sulla blockchain Ethereum è accompagnato dalla presenza di numerosi strumenti, in questa sezione sarà fornita la lista dei principali strumenti e delle dipendenze utilizzate durante la programmazione.
 
 \begin{itemize}
 \item NPM (Node Package Manager) per la gestione e l'installazione dei moduli/librerie Javascript. NPM richiede la presenza di Node.js\footnote{In questo progetto si è utilizzato Node.js nella versione 10.8.0 e NPM versione 6.2.0}.
-\item Truffle framework (versione 4.1.14)\footfullcite{truffleFramework} un ambiente di sviluppo composto da un insieme di strumenti che facilitano la creazione delle applicazioni decentralizzate (di seguito dApps) sulla piattaforma Ethereum. Truffle gestisce il ciclo di migrazione (sulla blockchain) degli smart contracts, il funzionamento dei contratti e l'esecuzione di test automatizzati.
 
-Il framework include Ganache\footfullcite{ganache} (versione 1.2.2), una blockchain personale, utile per lo sviluppo locale delle dApps. Ganache è un emulatore di nodi Ethereum con un'interfaccia grafica (in figura {\ref{fig:ganache}}) intuitiva, mette a disposizione un certo numero di account precaricati con Ether. Si tratta di una blockchain con un funzionamento semplificato permette di analizzare lo stato della blockchain.
+\item Truffle framework (versione 4.1.14)\footfullcite{truffleFramework} un ambiente di sviluppo composto da un insieme di strumenti che facilitano la creazione delle applicazioni decentralizzate (di seguito dApps) sulla piattaforma Ethereum. Truffle gestisce il ciclo di migrazione (sulla blockchain) degli smart contracts, la loro integrazione ed esecuzione con la possibilità di eseguire test automatizzati.
+
+Il framework include Ganache\footfullcite{ganache} (versione 1.2.2), una blockchain personale, utile per lo sviluppo locale delle dApps. Ganache è un emulatore di nodi Ethereum con un'interfaccia grafica intuitiva (in figura {\ref{fig:ganache}}), mette a disposizione un certo numero di account precaricati con Ether. Si tratta di una blockchain con un funzionamento semplificato che permette di analizzare lo stato della blockchain in qualunque momento dell'esecuzione.
 
 \begin{figure}[H]
 \centering
@@ -67,18 +68,37 @@ Il framework include Ganache\footfullcite{ganache} (versione 1.2.2), una blockch
 \label{fig:ganache}
 \end{figure}
 
-Truffle fornisce anche \emph{boilerplates} chiamati "boxes" utili per uno sviluppo accelerato\footnote{Come base di questo progetto si è scelto il pacchetto chiamato pet-shop disponibile su https://truffleframework.com/boxes/pet-shop}. 
-\item Mocha e Chai
-\item Metamask
-\item Web3.js
+Truffle fornisce anche il codice \emph{boilerplate} ragruppato in diversi pacchetti chiamati "boxes" utili per uno sviluppo accelerato\footnote{Come base di questo progetto si è scelto il pacchetto chiamato pet-shop disponibile su https://truffleframework.com/boxes/pet-shop}.
+
+\item Geth\footfullcite{geth} è l'implementazione ufficiale di un nodo completo Ethereum che permette la sincorinzzazione e la partecipazione alla blockchain Ethereum.
+
+\item Mocha e Chai sono usati per la costruzione e l'esecuzione di test automatizzati. Mocha\footfullcite{mocha} è un test framework per Javascript basato su Node.js, mentre Chai\footfullcite{chai} è una libreria di asserzioni che può essere implementata sul framework. Insieme permettono l'implementazione di test automatizzati complessivi secondo un approccio TDD (Test Driven Development) e BDD (Behaviour Driven Development).
+
+\item Metamask\footfullcite{metamask} è un’estensione, disponibile per i maggiori browser (Firefox, Chrome ecc.). Necessario per utilizzare le dApps fornisce un portafoglio che consente di identificare l'utente (attraverso la chiave privata) e di gestire le transazioni.
+
+\item Web3.js è una collezione di librerie che, attraverso un API, permette l'interazione con il codice dei contratti situati sulla blockchain. In particolare permette di sviluppare la parte client dell'applicazione con le chiamate ai di lettura e scrittura ai contratti.
+
 \end{itemize}
 
-
-
+Questi sono gli elementi più importanti, al momento più usati per interagire con le dApps e sviluppare le proprie applicazioni. Altri elementi scelti per lo sviluppo di questa specifica applicazione e quindi opzionali verranno introdotti in seguito.
 
 \section{Sviluppo dell'applicazione}
-MVP..
+
+Due fasi di sviluppo: la prima prototipo e MVP 
+La seconda app finale e deployment su testnet
 \subsection{Scrittura dei Contratti}
+
+\begin{lstlisting}[caption={Struttura degli oggetti},language=JavaScript]
+struct Artwork {
+    uint id; //identificatore univoco
+    address author; //indirizzo dell'autore
+    string name; //nome o titolo dell'oggetto
+    string descriptionHash; //descrizione completa dell'oggetto
+    string dataHash; //immagine rappresentativa dell'oggetto
+    bool validation; //stato dell'approvazione (true o false)
+    uint votesNum; //numero delle approvazioni (o voti)
+}
+\end{lstlisting}
 
 \subsection{Fase di test}
 
