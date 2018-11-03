@@ -48,7 +48,7 @@ Un ultima considerazione pratica riguarda le linee guida per la descrizione di b
 
 Il modulo Object ID\footfullcite{tpcCarabinieri} consente la descrizione di beni culturali ed è utile per le operazioni di recupero in caso di furto di tali beni. Idealmente quando la tecnologia sarà sufficientemente matura e testata, l'approvazione degli oggetti inseriti tramite un'applicazione basata sulla blockchain, potrebbe essere fatta dai membri autorizzati del Comando Carabinieri. Chiaramente il fatto di poter contare su una base di dati immutabile, permanente e dotata di storia completa fornirebbe dei vantaggi rilevanti rispetto ai sistemi attualmente in uso.
 
-Dunque con questo progetto si vuole dimostrare che è possibile adottare qualunque schema di descrizione in maniera relativamente semplice e quindi fornire una prova attendibile del possesso di tali beni. Mentre queste considerazioni sono state fatte tenendo in mente l'obiettivo consistente nella dimostrazione della metodologia, nel caso di un’applicazione pronta ad essere adottata al pubblico, questa parte assumerebbe un ruolo di primo piano per l'intero processo di sviluppo.
+Con questo progetto si vuole dimostrare che è possibile adottare qualunque schema di descrizione in maniera relativamente semplice e quindi fornire una prova attendibile del possesso di tali beni. Mentre queste considerazioni sono state fatte tenendo in mente l'obiettivo consistente nella dimostrazione della metodologia, nel caso di un’applicazione pronta ad essere adottata al pubblico, questa parte assumerebbe un ruolo di primo piano per l'intero processo di sviluppo.
 
 \section{Preparazione dell'ambiente di sviluppo}
 
@@ -70,24 +70,34 @@ Il framework include Ganache\footfullcite{ganache} (versione 1.2.2), una blockch
 
 Truffle fornisce anche il codice \emph{boilerplate} ragruppato in diversi pacchetti chiamati "boxes" utili per uno sviluppo accelerato\footnote{Come base di questo progetto si è scelto il pacchetto chiamato pet-shop disponibile su https://truffleframework.com/boxes/pet-shop}.
 
-\item Geth\footfullcite{geth} è l'implementazione ufficiale di un nodo completo Ethereum che permette la sincorinzzazione e la partecipazione alla blockchain Ethereum.
+\item Geth\footfullcite{geth} è l'implementazione ufficiale di un nodo completo Ethereum che permette la sincronizzazione e la partecipazione alla blockchain Ethereum.
 
 \item Mocha e Chai sono usati per la costruzione e l'esecuzione di test automatizzati. Mocha\footfullcite{mocha} è un test framework per Javascript basato su Node.js, mentre Chai\footfullcite{chai} è una libreria di asserzioni che può essere implementata sul framework. Insieme permettono l'implementazione di test automatizzati complessivi secondo un approccio TDD (Test Driven Development) e BDD (Behaviour Driven Development).
 
-\item Metamask\footfullcite{metamask} è un’estensione, disponibile per i maggiori browser (Firefox, Chrome ecc.). Necessario per utilizzare le dApps fornisce un portafoglio che consente di identificare l'utente (attraverso la chiave privata) e di gestire le transazioni.
+\item Metamask\footfullcite{metamask} è un’estensione, disponibile per i maggiori browser (Firefox, Brave, Chrome ecc.). Necessario per utilizzare le dApps fornisce un portafoglio che consente di identificare l'utente (attraverso la chiave privata) e di gestire le transazioni.
 
-\item Web3.js è una collezione di librerie che, attraverso un API, permette l'interazione con il codice dei contratti situati sulla blockchain. In particolare permette di sviluppare la parte client dell'applicazione con le chiamate ai di lettura e scrittura ai contratti.
+\item Web3.js\footfullcite{web3} è una collezione di librerie che, attraverso un API, permette l'interazione con il codice dei contratti situati sulla blockchain. In particolare permette di sviluppare la parte client dell'applicazione con le chiamate di lettura e di scrittura ai contratti.
 
 \end{itemize}
 
-Questi sono gli elementi più importanti, al momento più usati per interagire con le dApps e sviluppare le proprie applicazioni. Altri elementi scelti per lo sviluppo di questa specifica applicazione e quindi opzionali verranno introdotti in seguito.
+Questi sono gli elementi più importanti, al momento più usati per interagire con le dApps e sviluppare le proprie applicazioni. Altri elementi scelti per lo sviluppo di questa specifica applicazione, nella maggior parte opzionali, verranno introdotti in seguito.
 
 \section{Sviluppo dell'applicazione}
 
-Due fasi di sviluppo: la prima prototipo e MVP 
-La seconda app finale e deployment su testnet
+Lo sviluppo dell'applicazione può essere suddiviso in due fasi distinte:
+
+\begin{itemize}
+
+\item La prima fase si pone come obiettivo la creazione di un \emph{Minimal Viable Product} (MVP) cioè un prototipo che  implementata le funzionalità base del progetto. Consiste principalmente nello sviluppo dei contratti, l'esecuzione di test e costruzione di una interfaccia base (GUI) che permette l'interazione con i contratti in un contesto di sviluppo locale.
+
+\item Nella seconda fase si estendono le funzionalità di base in modo da implementare nuove funzionalità e costruire la versione finale. Consiste principalmente nell'integrazione con il servizio di storage IPFS, lo sviluppo della parte front-end finale e il trasferimento dei contratti su una blockchain di sviluppo (testnet).
+
+\end{itemize}
+
 \subsection{Scrittura dei Contratti}
 
+Gli smart contracts scritti in Solidity costituiscono la parte back-end e contengono la logica dell'applicazione. Il contratto principale, chiamato "Archives", definisce la struttura degli oggetti da inserire sulla blockchain.
+\\
 \begin{lstlisting}[caption={Struttura degli oggetti},language=JavaScript]
 struct Artwork {
     uint id; //identificatore univoco
@@ -100,9 +110,42 @@ struct Artwork {
 }
 \end{lstlisting}
 
-\subsection{Fase di test}
+Le caratteristiche degli oggetti sono definite tramite una variabile "Artwork" di tipo \emph{struct} cioè un tipo complesso definito dall'utente contenente al suo interno un insieme di proprietà che definiscono l'oggetto. Il passo successivo consiste nella costruzione di una sequenza di oggetti da memorizzare sulla blockchain. In Solidity è possibile costruire una sequenza composta da coppie chiave-valore (come in un array associativo) usando il tipo \emph{mapping}.
+\\
+\begin{lstlisting}[caption={Struttura degli oggetti},language=JavaScript]
+mapping (uint => Artwork) public artworks;
+uint artworkCounter; //contatore degli oggetti inseriti 
+\end{lstlisting}
 
-\subsection{Testnet}
+In questo modo mapping crea una specie\footfullcite{solidityMapping} di tabella hash (inizialmente vuota\footnote{In realtà è impossibile determinare a priori la dimensione del mapping ed eseguire delle iterazioni sugli elementi. Questo perché tutte le chiavi restituiranno un valore di default, in questo caso di tipo Artwork.}) composta da un indice univoco (uint) che si riferisce a un oggetto di tipo Artwork. Ogni volta che verrà eseguito un assegnamento di chiave-valore, il risultato sarà memorizzato sulla blockchain. Le tabelle hash sono una struttura dinamica e pertanto è necessario tenere una variabile contatore in modo da tenere traccia degli oggetti effettivamente inseriti.
+
+A questo punto analizzando il codice del contratto Archives.sol\footnote{https://github.com/lukasd2/Digital-Archives-dApp/blob/master/contracts/Archives.sol} è possibile vedere l'implementazione delle funzionalità previste.
+\\
+\begin{lstlisting}[caption={Funzioni del contratto Archives.sol},language=JavaScript]
+function publishArtwork(string _name, string _descriptionHash, 
+                        string _dataHash) public {...}
+function approveArtwork(uint _id) public onlyIfWhitelisted(
+                        msg.sender) checkValidation(_id) {...}
+function modifyArtworkDescription (uint _id, 
+                        string _newDescriptionHash) public {...}
+\end{lstlisting}
+
+\begin{itemize}
+\item La funzione "publishArtwork" gestisce l'inserimento di un nuovo oggetto nell'archivio.
+\item La funzione "approveArtwork" gestisce l'approvazione degli oggetti inserti. Permette agli utenti autorizzati di votare per un dato oggetto e di controllare se la quantità di voti registrati sono sufficienti all'approvazione dell'oggetto.
+\item La funzione "modifyArtworkDescription" permette all'utente che inserisce l'oggetto di modifcare la sua descrizione.
+\end{itemize}
+
+Successivamente 
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=1\textwidth]{immagini/contractStructure.png}
+\caption{Progetto: Struttura dei contratti}
+\label{fig:contractStructure}
+\end{figure}
+
+\subsection{Fase di test}
 
 \subsection{Programmazione front-end}
 
