@@ -90,13 +90,13 @@ Lo sviluppo dell'applicazione può essere suddiviso in due fasi distinte:
 
 \item La prima fase si pone come obiettivo la creazione di un \emph{Minimal Viable Product} (MVP) cioè un prototipo che  implementata le funzionalità base del progetto. Consiste principalmente nello sviluppo dei contratti, l'esecuzione di test e costruzione di una interfaccia base (GUI) che permette l'interazione con i contratti in un contesto di sviluppo locale.
 
-\item Nella seconda fase si estendono le funzionalità di base in modo da implementare nuove funzionalità e costruire la versione finale. Consiste principalmente nell'integrazione con il servizio di storage IPFS, lo sviluppo della parte front-end finale e il trasferimento dei contratti su una blockchain di sviluppo (testnet).
+\item Nella seconda fase si estendono le funzionalità di base in modo da implementare nuove funzionalità e costruire la versione finale. Consiste principalmente nell'integrazione con il servizio di storage IPFS, lo sviluppo della parte front-end finale e il trasferimento dei contratti su una blockchain Ethereum di sviluppo (\emph{testnet}).
 
 \end{itemize}
 
 \subsection{Scrittura dei Contratti}
 
-Gli smart contracts scritti in Solidity costituiscono la parte back-end e contengono la logica dell'applicazione. Il contratto principale, chiamato "Archives", definisce la struttura degli oggetti da inserire sulla blockchain.
+Gli smart contracts scritti in Solidity costituiscono la parte back-end e contengono la logica dell'applicazione. Nel contratto principale, \emph{Archives.sol}, tra le prime operazioni si definisce la struttura degli oggetti da inserire sulla blockchain.
 \\
 \begin{lstlisting}[caption={Struttura degli oggetti},language=JavaScript]
 struct Artwork {
@@ -112,31 +112,32 @@ struct Artwork {
 
 Le caratteristiche degli oggetti sono definite tramite una variabile "Artwork" di tipo \emph{struct} cioè un tipo complesso definito dall'utente contenente al suo interno un insieme di proprietà che definiscono l'oggetto. Il passo successivo consiste nella costruzione di una sequenza di oggetti da memorizzare sulla blockchain. In Solidity è possibile costruire una sequenza composta da coppie chiave-valore (come in un array associativo) usando il tipo \emph{mapping}.
 \\
-\begin{lstlisting}[caption={Struttura degli oggetti},language=JavaScript]
+\begin{lstlisting}[caption={Associazione chiave-valore},language=JavaScript]
 mapping (uint => Artwork) public artworks;
 uint artworkCounter; //contatore degli oggetti inseriti 
 \end{lstlisting}
 
-In questo modo mapping crea una specie\footfullcite{solidityMapping} di tabella hash (inizialmente vuota\footnote{In realtà è impossibile determinare a priori la dimensione del mapping ed eseguire delle iterazioni sugli elementi. Questo perché tutte le chiavi restituiranno un valore di default, in questo caso di tipo Artwork.}) composta da un indice univoco (uint) che si riferisce a un oggetto di tipo Artwork. Ogni volta che verrà eseguito un assegnamento di chiave-valore, il risultato sarà memorizzato sulla blockchain. Le tabelle hash sono una struttura dinamica e pertanto è necessario tenere una variabile contatore in modo da tenere traccia degli oggetti effettivamente inseriti.
+In questo modo mapping crea una specie\footfullcite{solidityMapping} di tabella hash (inizialmente vuota\footnote{In realtà è impossibile determinare a priori la dimensione del mapping o eseguire direttamente delle iterazioni sugli elementi. Questo perché tutte le chiavi restituiranno un valore di default, in questo caso di tipo Artwork.}) composta da un indice univoco (uint) che si riferisce a un oggetto di tipo Artwork. Ogni volta che verrà eseguito un assegnamento di chiave-valore, il risultato sarà memorizzato sulla blockchain. Le tabelle hash sono una struttura dinamica e pertanto è necessario tenere una variabile di stato contatore in modo da tenere traccia degli oggetti effettivamente inseriti.
 
-A questo punto analizzando il codice del contratto Archives.sol\footnote{https://github.com/lukasd2/Digital-Archives-dApp/blob/master/contracts/Archives.sol} è possibile vedere l'implementazione delle funzionalità previste.
+A questo punto analizzando il codice del contratto Archives.sol\footnote{https://github.com/lukasd2/Digital-Archives-dApp/blob/master/contracts/Archives.sol} sono state implementate le funzionalità descritte nella fase di definizione dei requisiti del progetto.
 \\
-\begin{lstlisting}[caption={Funzioni del contratto Archives.sol},language=JavaScript]
+\begin{lstlisting}[caption={Funzioni principali del contratto Archives.sol},language=JavaScript]
 function publishArtwork(string _name, string _descriptionHash, 
                         string _dataHash) public {...}
 function approveArtwork(uint _id) public onlyIfWhitelisted(
                         msg.sender) checkValidation(_id) {...}
-function modifyArtworkDescription (uint _id, 
+function modifyArtworkDescription(uint _id, 
                         string _newDescriptionHash) public {...}
 \end{lstlisting}
 
 \begin{itemize}
 \item La funzione "publishArtwork" gestisce l'inserimento di un nuovo oggetto nell'archivio.
-\item La funzione "approveArtwork" gestisce l'approvazione degli oggetti inserti. Permette agli utenti autorizzati di votare per un dato oggetto e di controllare se la quantità di voti registrati sono sufficienti all'approvazione dell'oggetto.
+\item La funzione "approveArtwork" gestisce l'approvazione degli oggetti inserti. Permette agli utenti autorizzati di votare per un dato oggetto e di controllare se il numero di voti registrati è sufficiente alla sua approvazione.
 \item La funzione "modifyArtworkDescription" permette all'utente che inserisce l'oggetto di modifcare la sua descrizione.
 \end{itemize}
 
-Successivamente 
+Successivamente al contratto Archives.sol sono stati aggiunti altri contratti che espandono le funzionalità e i controlli richiesti dall'applicazione. Per la costruzione della struttura dei contratti si è sfruttato il meccanismo dell'ereditarietà di Solidity con la gerarchia rappresentata in figura \ref{fig:contractStructure}. Archives.sol si trova al livello più alto della catena e dunque può usufruire di tutte le funzioni definite nei contratti situati a livello più basso. In particolare i contratti Whitelist.sol, RBAC.sol e Roles.sol sono usati rispettivamente per aggiungere indirizzi alla lista di utenti dotati di permessi di verifica e per gestire i permessi degli utenti che acquistano lo status di "artwork checker" con i rispettivi controlli.
+Il contratto Ownable.sol implementa il meccanismo di autorizzazione dell'autore del contratto, cioè all'indirizzo che pubblica il contratto sulla rete. Nella versione attuale al "proprietario" vengono dati i permessi di aggiungere nuovi utenti alla whitelist. 
 
 \begin{figure}[H]
 \centering
@@ -145,9 +146,35 @@ Successivamente
 \label{fig:contractStructure}
 \end{figure}
 
-\subsection{Fase di test}
+Questi contratti (Whitelist.sol, Ownable.sol, RBAC.sol e Roles.sol) sono stati presi dalla libreria OpenZeppelin\footfullcite{openZeppelin} contenente implementazioni delle funzionalità ricorrenti nelle dApps. Sono considerati sicuri perché ampiamente testati e aggiornati dalla comunità, questi contratti sono stati opportunamente modificati e integrati in questo progetto{\footnote{Codice di tutti i contratti implementati, https://github.com/lukasd2/Digital-Archives-dApp/tree/master/contracts}}.
 
-\subsection{Programmazione front-end}
+\subsection{Test dei Contratti}
+
+Una volta implementata la logica dell'applicazione è particolarmente importante assicurarsi che i contratti siano sicuri e privi di errori eseguendo dei test automatici. Gli smart contracts una volta pubblicati su Ethereum diventano immutabili, ai contratti verrà assegnato un certo indirizzo sulla blockchain e non sarà più possibile effettuare delle modifiche al loro codice. 
+
+Un altro aspetto importante riguarda i costi legati alla loro pubblicazione, le nuove versioni dell'applicazione possono essere pubblicate sotto nuovi indirizzi e ogni volta sarà necessario pagare, ex novo, il prezzo (Gas) calcolato per la loro pubblicazione. Un discorso analogo può essere fatto per i costi legati alle singole transazioni del contratto, l'obiettivo ideale è quello di creare una versione dell'applicazione ottimizzata e affidabile per i casi d'uso previsti dal programma e allo stesso tempo testata per prevenire comportamenti indesiderati.
+
+In questa applicazione i programmi di testing sono stati divisi in tre parti (DigitalArchives\_initialState.js, DigitalArchives\_events.js e DigitalArchives\_exceptions.js{\footnote{Codice dei test automatizzati, https://github.com/lukasd2/Digital-Archives-dApp/tree/master/test}}). I programmi fanno uso della libreria di asserzioni Chai, nel primo gruppo viene controllato lo stato iniziale del contratto simulando una situazione al momento della pubblicazione sulla blockchain. Il secondo gruppo verifica l'esecuzione degli eventi e i comportamenti previsti al cambiamento dello stato in seguito alle transazioni. Infine il terzo gruppo riunisce un certo numero di scenari non permessi che l'applicazione dovrebbe gestire lanciando delle eccezioni.
+
+Di seguito nella figura \ref{fig:contractTests} è mostrata l'esecuzione di questi test con Truffle e Ganache.
+\\
+\begin{lstlisting}[caption={Truffle esecuzione di test},language=JavaScript]
+>> truffle test
+\end{lstlisting}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=1\textwidth]{immagini/testContratti.png}
+\caption{Progetto: Risultato esecuzione dei test}
+\label{fig:contractTests}
+\end{figure}
+
+
+\subsection{Interazione client-side}
+
+\subsection{Integrazione con IPFS}
+
+\subsection{Costruzione dell'interfaccia}
 
 \subsection{Ethereum Testnet}
 
