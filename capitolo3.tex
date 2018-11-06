@@ -12,7 +12,7 @@ In dettaglio l’applicazione deve soddisfare i seguenti requisiti e funzionalit
 \begin{itemize}
 \item Inserimento di oggetti nell’archivio attraverso l’utilizzo di sistemi di metadati adatti alla descrizione delle risorse da inserire.
 \item Memorizzazione e visualizzazione degli oggetti inseriti.
-\item Presenza di una categoria di utenti dotati di permessi di verifica dei dati inseriti nel sistema e approvazione degli oggetti inseriti attraverso un sistema di votazione.
+\item Presenza di una categoria di utenti dotati di permessi di verifica dei dati inseriti nel sistema e approvazione degli oggetti attraverso un sistema di votazione.
 \item Possibilità di modificare l’oggetto inserito da parte del suo autore mantenendo la storia completa delle modifiche effettuate.
 \end{itemize}
 
@@ -26,7 +26,7 @@ Esistono molti standard più o meno formali per la descrizione di particolari ca
 
 La scelta è stata fatta tenendo conto dei diversi fattori a partire dal vasto insieme di tipologie a cui possono appartenere gli oggetti dell'archivio, è importante sopratutto trovare un compromesso tra la complessità della descrizione, la facilità di utilizzo per un utente non esperto in materia e il grado di precisione del sistema utilizzato. Per questo l’utente può scegliere tra tre modalità di inserimento, dal più semplice al più complesso. Dublin Core fornisce uno schema di meta informazioni ideato per assegnare etichette ragionevoli interessanti per qualunque materiale digitale. È uno schema flessibile, semplice ed estendibile che si presta bene alla costruzione di form adatte per la maggior parte dei casi di utilizzo previsti.
 
-In figura \ref{fig:progettoInserimento} è rappresentata una parte della finestra contenente il modulo di inserimento con le relative scelte implementato nel progetto.
+In figura \ref{fig:progettoInserimento} è rappresentata una parte della finestra contenente il modulo, implementato nel progetto, di inserimento con le relative scelte relative ai sistemi di descrizione da utilizzare.
 
 \begin{figure}[H]
 \centering
@@ -46,7 +46,7 @@ Un ultima considerazione pratica riguarda le linee guida per la descrizione di b
 \label{fig:carabinieriTPC}
 \end{figure}
 
-Il modulo Object ID\footfullcite{tpcCarabinieri} consente la descrizione di beni culturali ed è utile per le operazioni di recupero in caso di furto di tali beni. Idealmente quando la tecnologia sarà sufficientemente matura e testata, l'approvazione degli oggetti inseriti tramite un'applicazione basata sulla blockchain, potrebbe essere fatta dai membri autorizzati del Comando Carabinieri. Chiaramente il fatto di poter contare su una base di dati immutabile, permanente e dotata di storia completa fornirebbe dei vantaggi rilevanti rispetto ai sistemi attualmente in uso.
+Il modulo Object ID\footfullcite{tpcCarabinieri} consente la descrizione di beni culturali ed è utile per le operazioni di recupero in caso di furto di tali beni. Quando la tecnologia sarà sufficientemente matura e testata, l'approvazione degli oggetti inseriti tramite un'applicazione basata sulla blockchain, potrebbe essere fatta dai membri autorizzati del Comando Carabinieri. Chiaramente il fatto di poter contare su una base di dati immutabile, permanente e dotata di storia completa fornirebbe dei vantaggi rilevanti rispetto ai sistemi attualmente in uso.
 
 Con questo progetto si vuole dimostrare che è possibile adottare qualunque schema di descrizione in maniera relativamente semplice e quindi fornire una prova attendibile del possesso di tali beni. Mentre queste considerazioni sono state fatte tenendo in mente l'obiettivo consistente nella dimostrazione della metodologia, nel caso di un’applicazione pronta ad essere adottata al pubblico, questa parte assumerebbe un ruolo di primo piano per l'intero processo di sviluppo.
 
@@ -72,23 +72,23 @@ Truffle fornisce anche il codice \emph{boilerplate} ragruppato in diversi pacche
 
 \item Geth\footfullcite{geth} è l'implementazione ufficiale di un nodo completo Ethereum che permette la sincronizzazione e la partecipazione alla blockchain Ethereum.
 
-\item Mocha e Chai sono usati per la costruzione e l'esecuzione di test automatizzati. Mocha\footfullcite{mocha} è un test framework per Javascript basato su Node.js, mentre Chai\footfullcite{chai} è una libreria di asserzioni che può essere implementata sul framework. Insieme permettono l'implementazione di test automatizzati complessivi secondo un approccio TDD (Test Driven Development) e BDD (Behaviour Driven Development).
+\item Mocha e Chai sono usati per la creazione e l'esecuzione di test automatizzati. Mocha\footfullcite{mocha} è un test framework per Javascript basato su Node.js, mentre Chai\footfullcite{chai} è una libreria di asserzioni che può essere implementata sul framework. Insieme permettono l'implementazione di test automatizzati complessivi secondo un approccio TDD (Test Driven Development) e BDD (Behaviour Driven Development).
 
-\item Metamask\footfullcite{metamask} è un’estensione, disponibile per i maggiori browser (Firefox, Brave, Chrome ecc.). Necessario per utilizzare le dApps fornisce un portafoglio che consente di identificare l'utente (attraverso la chiave privata) e di gestire le transazioni.
+\item Metamask\footfullcite{metamask} è un’estensione, disponibile per i maggiori browser (Firefox, Brave, Chrome ecc.). Necessario per utilizzare le dApps fornisce un portafoglio (\emph{wallet}) che consente di identificare l'utente (attraverso la chiave pubblica) e di gestire le transazioni con la chiave privata.
 
-\item Web3.js\footfullcite{web3} è una collezione di librerie che, attraverso un API, permette l'interazione con il codice dei contratti situati sulla blockchain. In particolare permette di sviluppare la parte client dell'applicazione con le chiamate di lettura e di scrittura ai contratti.
+\item Web3.js\footfullcite{web3} (versione 0.20) è una collezione di librerie che, attraverso un API, permette l'interazione con il codice dei contratti situati sulla blockchain. In particolare permette di sviluppare la parte client dell'applicazione con le chiamate di lettura e di scrittura ai contratti.
 
 \end{itemize}
 
-Questi sono gli elementi più importanti, al momento più usati per interagire con le dApps e sviluppare le proprie applicazioni. Altri elementi scelti per lo sviluppo di questa specifica applicazione, nella maggior parte opzionali, verranno introdotti in seguito.
+Questi sono gli elementi più importanti, al momento più usati per interagire con le dApps e per sviluppare le proprie applicazioni. Altri elementi scelti per lo sviluppo di questa specifica applicazione, nella maggior parte opzionali, verranno introdotti in seguito.
 
 \section{Sviluppo dell'applicazione}
 
-Lo sviluppo dell'applicazione può essere suddiviso in due fasi distinte:
+Lo sviluppo di questo progetto può essere suddiviso in due fasi distinte:
 
 \begin{itemize}
 
-\item La prima fase si pone come obiettivo la creazione di un \emph{Minimal Viable Product} (MVP) cioè un prototipo che  implementata le funzionalità base del progetto. Consiste principalmente nello sviluppo dei contratti, l'esecuzione di test e costruzione di una interfaccia base (GUI) che permette l'interazione con i contratti in un contesto di sviluppo locale.
+\item La prima fase si pone come obiettivo la creazione di un \emph{Minimal Viable Product} (MVP) cioè un prototipo che  implementata le funzionalità base. Consiste principalmente nello sviluppo dei contratti, l'esecuzione di test e costruzione di un'interfaccia di prova (GUI) che permette l'interazione con i contratti in un contesto di sviluppo locale.
 
 \item Nella seconda fase si estendono le funzionalità di base in modo da implementare nuove funzionalità e costruire la versione finale. Consiste principalmente nell'integrazione con il servizio di storage IPFS, lo sviluppo della parte front-end finale e il trasferimento dei contratti su una blockchain Ethereum di sviluppo (\emph{testnet}).
 
@@ -104,7 +104,7 @@ struct Artwork {
     address author; //indirizzo dell'autore
     string name; //nome o titolo dell'oggetto
     string descriptionHash; //descrizione completa dell'oggetto
-    string dataHash; //immagine rappresentativa dell'oggetto
+    string mainPreviewHash; //immagine rappresentativa dell'oggetto
     bool validation; //stato dell'approvazione (true o false)
     uint votesNum; //numero delle approvazioni (o voti)
 }
@@ -117,7 +117,7 @@ mapping (uint => Artwork) public artworks;
 uint artworkCounter; //contatore degli oggetti inseriti 
 \end{lstlisting}
 
-In questo modo mapping crea una specie\footfullcite{solidityMapping} di tabella hash (inizialmente vuota\footnote{In realtà è impossibile determinare a priori la dimensione del mapping o eseguire direttamente delle iterazioni sugli elementi. Questo perché tutte le chiavi restituiranno un valore di default, in questo caso di tipo Artwork.}) composta da un indice univoco (uint) che si riferisce a un oggetto di tipo Artwork. Ogni volta che verrà eseguito un assegnamento di chiave-valore, il risultato sarà memorizzato sulla blockchain. Le tabelle hash sono una struttura dinamica e pertanto è necessario tenere una variabile di stato contatore in modo da tenere traccia degli oggetti effettivamente inseriti.
+In questo modo mapping crea una specie\footfullcite{solidityMapping} di tabella hash (inizialmente vuota\footnote{In realtà è impossibile determinare a priori la dimensione del mapping o eseguire direttamente delle iterazioni sugli elementi. Questo perché tutte le chiavi restituiranno un valore di default di tipo Artwork.}) composta da un indice univoco (uint) che si riferisce a un oggetto di tipo Artwork. Ogni volta che verrà eseguito un assegnamento di chiave-valore, il risultato sarà memorizzato sulla blockchain. Le tabelle hash sono una struttura dinamica e pertanto è necessario tenere una variabile di stato contatore in modo da tenere traccia degli oggetti effettivamente inseriti.
 
 A questo punto analizzando il codice del contratto Archives.sol\footnote{https://github.com/lukasd2/Digital-Archives-dApp/blob/master/contracts/Archives.sol} sono state implementate le funzionalità descritte nella fase di definizione dei requisiti del progetto.
 \\
@@ -154,9 +154,9 @@ Una volta implementata la logica dell'applicazione è particolarmente importante
 
 Un altro aspetto importante riguarda i costi legati alla loro pubblicazione, le nuove versioni dell'applicazione possono essere pubblicate sotto nuovi indirizzi e ogni volta sarà necessario pagare, ex novo, il prezzo (Gas) calcolato per la loro pubblicazione. Un discorso analogo può essere fatto per i costi legati alle singole transazioni del contratto, l'obiettivo ideale è quello di creare una versione dell'applicazione ottimizzata e affidabile per i casi d'uso previsti dal programma e allo stesso tempo testata per prevenire comportamenti indesiderati.
 
-In questa applicazione i programmi di testing sono stati divisi in tre parti (DigitalArchives\_initialState.js, DigitalArchives\_events.js e DigitalArchives\_exceptions.js{\footnote{Codice dei test automatizzati, https://github.com/lukasd2/Digital-Archives-dApp/tree/master/test}}). I programmi fanno uso della libreria di asserzioni Chai, nel primo gruppo viene controllato lo stato iniziale del contratto simulando una situazione al momento della pubblicazione sulla blockchain. Il secondo gruppo verifica l'esecuzione degli eventi e i comportamenti previsti al cambiamento dello stato in seguito alle transazioni. Infine il terzo gruppo riunisce un certo numero di scenari non permessi che l'applicazione dovrebbe gestire lanciando delle eccezioni.
+In questa applicazione i programmi di testing sono stati divisi in tre parti (DigitalArchives\_initialState.js, DigitalArchives\_events.js e DigitalArchives\_exceptions.js{\footnote{Codice dei test automatizzati, https://github.com/lukasd2/Digital-Archives-dApp/tree/master/test}}). I programmi fanno uso della libreria di asserzioni Chai, nel primo gruppo viene controllato lo stato iniziale del contratto simulando una lo stato del contratto al momento della pubblicazione sulla blockchain. Il secondo gruppo verifica l'esecuzione degli eventi e i comportamenti previsti al cambiamento dello stato in seguito alle transazioni. Infine il terzo gruppo riunisce un certo numero di scenari non permessi (\emph{edge cases}) che l'applicazione dovrebbe gestire lanciando delle eccezioni.
 
-Di seguito nella figura \ref{fig:contractTests} è mostrata l'esecuzione di questi test con Truffle e Ganache.
+Di seguito nella figura \ref{fig:contractTests} è mostrata l'esecuzione di questi test con framework Truffle.
 \\
 \begin{lstlisting}[caption={Truffle esecuzione di test},language=JavaScript]
 >> truffle test
@@ -169,15 +169,39 @@ Di seguito nella figura \ref{fig:contractTests} è mostrata l'esecuzione di ques
 \label{fig:contractTests}
 \end{figure}
 
+\subsection{Applicazione client-side}
 
-\subsection{Interazione client-side}
+Ultimo passaggio della prima fase di sviluppo\footnote{Il processo di sviluppo del prototipo può essere consultato in questa repository, https://github.com/lukasd2/DigitalArchivesPrototype} consiste nella programmazione di un'interfaccia client-side da collegare con i contratti testati.
+
+Web3.js è una collezione di librerie che permettono di effettuare operazioni di lettura e scrittura sulla blockchain, così come avviene ad esempio con \emph{Ajax} e i web server tradizionali. Fondamentalmente, a parte l’utilizzo di web3, il lato della programmazione front-end non subisce altri cambiamenti. Per le istruzioni di chiamata alla blockchain bisogna tenere conto dell’utilizzo delle funzioni asincrone e quindi gestire l’interfaccia e il flusso delle funzioni in modo adeguato per l’utente finale e per la gestione dei risultati in arrivo.
+
+Per questo progetto si è scelto di costruire un'interfaccia minima con Bootstrap\footfullcite{bootstrap}, in figura \ref{fig:Prototipo} si vede la parte relativa all'inserimento di un oggetto nella blockchain. 
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=1\textwidth]{immagini/prototype.PNG}
+\caption{Progetto: Prototipazione inserimento oggetto sulla blockchain}
+\label{fig:Prototipo}
+\end{figure}
+
+A questo punto è possibile testare il funzionamento della dApp attraverso l'interfaccia grafica, per quanto riguarda le transazioni, ovvero le chiamate ai contratti che richiedono lo svolgimento di calcoli computazionali da parte della EVM, saranno intercettate da Metamask. Inoltre in questa fase potrebbe essere utile passare da una blockchain con un funzionamento semplificato,  impostando un nodo blockchain (privato) vero e proprio con Geth per accertarsi del funzionamento corretto della dApp.
 
 \subsection{Integrazione con IPFS}
+
+\begin{lstlisting}[caption={Aggiunta di file con IPFS Javascript API},language=JavaScript]
+ipfs.files.add(data, [options], [callback])
+\end{lstlisting}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=1\textwidth]{immagini/ipfsIntegration.png}
+\caption{Progetto: Struttura dell'applicazione finale}
+\label{fig:dapp}
+\end{figure}
 
 \subsection{Costruzione dell'interfaccia}
 
 \subsection{Ethereum Testnet}
 
-\subsection{Considerazioni finali}
 
 
