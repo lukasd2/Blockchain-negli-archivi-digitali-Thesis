@@ -88,9 +88,9 @@ Lo sviluppo di questo progetto può essere suddiviso in due fasi distinte:
 
 \begin{itemize}
 
-\item La prima fase si pone come obiettivo la creazione di un \emph{Minimal Viable Product} (MVP) cioè un prototipo che  implementata le funzionalità base. Consiste principalmente nello sviluppo dei contratti, l'esecuzione di test e costruzione di un'interfaccia di prova (GUI) che permette l'interazione con i contratti in un contesto di sviluppo locale.
+\item La prima fase si pone come obiettivo la creazione di un \emph{Minimal Viable Product} (MVP) cioè un prototipo che implementata le funzionalità base. Consiste principalmente nello sviluppo dei contratti, l'esecuzione di test e costruzione di un'interfaccia di prova (GUI) che permette l'interazione con i contratti in un contesto di sviluppo locale.
 
-\item Nella seconda fase si estendono le funzionalità di base in modo da implementare nuove funzionalità e costruire la versione finale. Consiste principalmente nell'integrazione con il servizio di storage IPFS, lo sviluppo della parte front-end finale e il trasferimento dei contratti su una blockchain Ethereum di sviluppo (\emph{testnet}).
+\item Nella seconda fase si estende l'applicazione in modo da implementare nuove funzionalità e costruire la versione finale. Questa fase consiste principalmente nell'integrazione con il servizio di storage IPFS, lo sviluppo della parte front-end finale e il trasferimento dei contratti su una blockchain Ethereum di sviluppo (\emph{testnet}).
 
 \end{itemize}
 
@@ -184,20 +184,46 @@ Per questo progetto si è scelto di costruire un'interfaccia minima con Bootstra
 \label{fig:Prototipo}
 \end{figure}
 
-A questo punto è possibile testare il funzionamento della dApp attraverso l'interfaccia grafica, per quanto riguarda le transazioni, ovvero le chiamate ai contratti che richiedono lo svolgimento di calcoli computazionali da parte della EVM, saranno intercettate da Metamask. Inoltre in questa fase potrebbe essere utile passare da una blockchain con un funzionamento semplificato,  impostando un nodo blockchain (privato) vero e proprio con Geth per accertarsi del funzionamento corretto della dApp.
+A questo punto è possibile testare il funzionamento della dApp attraverso l'interfaccia grafica. Per quanto riguarda le transazioni, ovvero le chiamate ai contratti che richiedono lo svolgimento di calcoli computazionali da parte della EVM, saranno intercettate da Metamask. In questa fase potrebbe essere utile passare da una blockchain con un funzionamento semplificato, impostando un nodo blockchain (privato) vero e proprio con Geth per accertarsi del funzionamento corretto della dApp.
 
 \subsection{Integrazione con IPFS}
 
-\begin{lstlisting}[caption={Aggiunta di file con IPFS Javascript API},language=JavaScript]
-ipfs.files.add(data, [options], [callback])
-\end{lstlisting}
+Nelle dApp che richiedono la memorizzazione di una quantità rilevante di dati, che nelle blockchain è tra le operazioni più costose, diventa indispensabile integrare un servizio di storage esterno. In questo progetto si utilizza IPFS per memorizzare e richiamare i dati troppo grandi da essere mantenuti direttamente su Ethereum. La figura \ref{fig:dapp} rappresenta l'impostazione finale della logica dell’applicazione.
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=1\textwidth]{immagini/ipfsIntegration.png}
-\caption{Progetto: Struttura dell'applicazione finale}
+\caption{Progetto: Logica dell'applicazione finale}
 \label{fig:dapp}
 \end{figure}
+
+Seguendo questa impostazione la compilazione del modulo per l’inserimento di un nuovo oggetto include la spedizione delle risorse su IPFS. Prima di poter spedire la transazione sulla blockchain, la richiesta viene processata e rimane in attesa di upload sul servizio di storage. Se il caricamento avviene con successo verrà restituito un indirizzo hash contenente i file caricati. A questo punto sarà possibile memorizzare il riferimento all'indirizzo IPFS sulla blockchain con una transazione. Ricapitolando l'oggetto, la cui struttura è definita nel contratto, conterrà un puntatore all'indirizzo IPFS contenente la sua descrizione.
+\\
+\begin{lstlisting}[caption={Riferimento all'indirizzo hash di IPFS},language=JavaScript]
+struct Artwork {
+    ...
+    string descriptionHash; //hash della descrizione dell'oggetto 
+}
+\end{lstlisting}
+
+In questo modo viene si sfrutta la caratteristica di IPFS dell'indirizzamento basato sul contenuto per cui è matematicamente certo che sotto un indirizzo hash sarà possibile trovare un dato contenuto immutabile e con il progredire della tecnologia, permanente. Riguardo alla permanenza, il sistema IPFS allo stato dell'arte non ha implementato un meccanismo di incentivi per cui, in questa applicazione, la memorizzazione viene effettuata attraverso Infura\footfullcite{infura}, un API che agisce da intermediario per il mantenimento del contenuto accessibile senza bisogno di mantenere un nodo personale (IPFS) costantemente attivo. Dunque una chiamata generica di caricamento del contenuto su IPFS avrà la seguente struttura:
+\\
+\begin{lstlisting}[caption={Aggiunta di file con IPFS Javascript API},language=JavaScript]
+ipfs.files.add(data, [options], [callback])
+\end{lstlisting}
+
+Una delle principali funzionalità dell'applicazione, l'inserimento dell'oggetto sulla blockchain, è composta dalla seguente catena di operazioni:
+
+\begin{enumerate}
+    \item Utente compila il modulo descrittivo dell'oggetto e preme il pulsante "Inserisci Oggetto"
+    \item Il programma cattura i file (in questa implementazione immagini) rappresentative dell'oggetto e attraverso un Buffer\footnote{https://www.npmjs.com/package/buffer} li trasforma in una sequenza di dati binari
+    \item La sequenza di bit viene caricata su IPFS
+    \item IPFS ritorna un indirizzo hash per ciascuno dei file caricati che vengono memorizzati nella sessione in esecuzione del programma
+    \item Il programma costruisce una descrizione completa dell'oggetto utilizzando la versione del sistema di metadati scelta dall'utente e include gli indirizzi hash dei file caricati. Con un’altra operazione di caricamento su IPFS il tutto viene raggruppato sotto un unico indirizzo hash che viene restituito al programma in esecuzione
+    \item Il riferimento hash adesso può essere spedito e memorizzato sulla blockchain con una transazione effettuata e confermata dall'utente attraverso Metamask
+    \item La descrizione completa dell'oggetto viene richiamata utilizzando il riferimento memorizzato sulla blockchain che punta alla posizione contenuta su IPFS
+\end{enumerate}
+
 
 \subsection{Costruzione dell'interfaccia}
 
