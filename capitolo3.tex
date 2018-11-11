@@ -232,10 +232,44 @@ Una delle principali funzionalità dell'applicazione, l'inserimento dell'oggetto
 
 \subsection{Costruzione dell'interfaccia finale}
 
-L’interfaccia finale dell’applicazione è stata costruita una volta implementata la logica completa del suo funzionamento seguita da una fase di test per verificarne la correttezza. Per questa fase di programmazione \emph{front-end} si è scelto di utilizzare Bulma\footfullcite{bulma} e Sass\footfullcite{sass}. Bulma è un framework CSS basato su flexbox con un certo numero di elementi grafici predisposti e un sistema di griglia che facilita la costruzione di layout flessibili mentre Sass è un preprocessore CSS che serve principalmente per velocizzare e rendere più efficiente lo sviluppo dei fogli di stile\footnote{Sass, estende i fogli di stile con diverse funzionalità tra cui la possibilità di utilizzare variabili, funzioni modulari (mixins), operazioni matematiche ecc.}. 
+Una volta implementata la logica completa dell’applicazione, seguita da una fase di test per verificarne la correttezza, è stata costruita l’interfaccia grafica finale. Per questa fase di programmazione \emph{front-end} si è scelto di utilizzare Bulma\footfullcite{bulma} e Sass\footfullcite{sass}. Bulma è un framework CSS basato su \emph{flexbox} con un certo numero di elementi grafici predefiniti e un sistema di griglia che facilita la costruzione di layout flessibili, mentre Sass è un preprocessore CSS, serve principalmente per velocizzare e rendere più efficiente lo sviluppo dei fogli di stile\footnote{Sass estende i fogli di stile con diverse funzionalità tra cui la possibilità di utilizzare variabili, funzioni modulari (mixins), operazioni matematiche ecc.}. In figura \ref{fig:indexApp} è possibile vedere la pagina iniziale dell'applicazione.
 
+\begin{figure}[H]
+\centering
+\includegraphics[width=1\textwidth]{immagini/prova3Index.PNG}
+\caption{Progetto: Pagina iniziale dell'applicazione}
+\label{fig:indexApp}
+\end{figure}
+
+Questa pagina serve a dare informazioni essenziali sulle funzionalità del progetto e i vantaggi derivanti dall'utilizzo della blockchain. Inoltre serve da guida per l'utilizzo delle dApps e si ricollega direttamente ai contenuti di questo elaborato.
+
+La parte principale dell'applicazione, contente l'archivio, è illustrata in figura \ref{fig:artworkApp}.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=1\textwidth]{immagini/artwork3Prova.PNG}
+\caption{Progetto: Pagina contente l'archivio blockchain}
+\label{fig:artworkApp}
+\end{figure}
+
+Con questa impostazione dell'interfaccia finale l'applicazione è divisa logicamente, da sinistra verso destra, in tre parti. Nella parte sinistra è possibile attivare il modulo per l'inserimento di un oggetto nel registro e consultare le informazioni principali relative al proprio account (l'indirizzo utente, il bilancio di token e i permessi). 
+
+La parte centrale contiene l'archivio di tutte le opere registrate sulla blockchain e le informazioni principali relative a ciascun oggetto come illustrato di seguito nella figura \ref{fig:artworkFocus}. Inoltre permette di "filtrare" gli oggetti in base al loro stato di approvazione e tramite il titolo attraverso la barra di ricerca (in alto a sinistra).
+
+La parte a destra, contiene la descrizione completa di ciascun oggetto inserito nell'archivio. In particolare i metadati e le immagini descrittive vengono richiamate da IPFS attraverso l'indirizzo hash memorizzato direttamente sulla blockchain.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=1\textwidth]{immagini/artworkFocusCommented.png}
+\caption{Progetto: Archivio la scheda di un oggetto}
+\label{fig:artworkFocus}
+\end{figure}
 
 \subsection{Ethereum Testnet}
 
+Il trasferimento dei contratti su una blockchain Ethereum di prova (\emph{testnet}) conclude la parte dello sviluppo di questo progetto. Ethereum ha diverse reti comunemente chiamate testnet destinate appunto allo scopo di provare il funzionamento dei contratti su una blockchain destinata alla sperimentazione. La differenza principale tra queste reti e la rete principale (\emph{mainnet}) deriva dall’utilizzo di token che non hanno un valore reale su mainnet dunque è possibile sviluppare le proprie applicazioni e pubblicarle eseguendo test su utenti della determinata rete di prova evitando di dover sostenere spese legate alle transazioni.
 
+In questo progetto si è scelto di pubblicare i contratti su Ropsten, una rete di prova che, al momento dello scrivere, utilizza lo stesso sistema di consenso (Proof of Work) della rete principale. È una rete in grado di riprodurre con un buon grado di precisione il funzionamento della rete principale, questo è particolarmente utile per controllare i costi legati alle transazioni e tutti gli aspetti legati al funzionamento della dApp stessa. Questa fase risulta fondamentale nel processo di sviluppo di un’applicazione decentralizzata ed è raccomandabile effettuarla possibilmente con un numero di utenti il più ampio possibile per raccogliere i dati (\emph{feedback}) circa il funzionamento di una data implementazione in modo da trovare eventuali bug ed errori prima di pubblicare l'applicazione sulla blockchain principale.
+
+Dal punto di vista pratico i modi più comuni per la pubblicazione (\emph{deployment}) sulle reti di prova consistono nell’utilizzo di Infura e Geth.
 
